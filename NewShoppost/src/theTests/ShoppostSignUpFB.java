@@ -52,6 +52,7 @@ import shoppostBeans.SauceLabData;
 import shoppostPages.ProductCatalog;
 import shoppostPages.SignUpSignIn;
 import shoppostPages.UserAgreement;
+import shoppostPages.FBsignIn;
 
 import shoppostTestSupport.GetDrivers;
 import shoppostTestSupport.Global;
@@ -75,7 +76,7 @@ public class ShoppostSignUpFB {
 	//private static AcctSetData _asd;
 	private static LPData _ltd;
 	private String userName, _username, _password, _freshUser, _usernameFB;
-	private String accessCode, _passkey, _email, _currUrl, _testCase, _emailAddress;
+	private String accessCode, _passkey, _passkeyFB, _email, _currUrl, _testCase, _emailAddress;
 	private DesiredCapabilities capabilities;
 	private int m;
 	private WebDriverWait wait, wait2;
@@ -86,6 +87,7 @@ public class ShoppostSignUpFB {
 	private SignUpSignIn signupinPage;
 	private UserAgreement userAgreementPage;
 	private ProductCatalog catalog;
+	private FBsignIn FBone, FBtwo;
 	private String _errorMsg;
 	//private ScreenShot ss;
 	
@@ -143,7 +145,8 @@ public class ShoppostSignUpFB {
 		SignOut logout = new SignOut(driver);
 		
 		_usernameFB = _td.getSignupinFBTests().getUsernameFB();
-		_passkey = _td.getSignupinFBTests().getPasswordFB();
+		_passkeyFB = _td.getSignupinFBTests().getPasswordFB();
+		_username = _td.getSignupinFBTests().getUsername();
 		_freshUser = "";
 		
 		//System.out.println("testLength is: "+TestRunner.getTests().length);
@@ -158,17 +161,30 @@ public class ShoppostSignUpFB {
   			
 					
 					
-				case "signinValid": 
+				case "signupValidFB": //not initially signed into FB
 					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
-					_password = _passkey;
+					_password = _passkeyFB;
 					
+					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
 					
-					signup.signInTest(_email, _password, 0);
+					signupinPage.signupFB(_usernameFB, _passkeyFB);
+					FBone = PageFactory.initElements(driver, FBsignIn.class);  //instantiate the pageOject 
+					
+					FBone.signupNow(_usernameFB, _password);
+					
+					FBtwo = PageFactory.initElements(driver, FBsignIn.class);  //instantiate the pageOject 
+
+					FBtwo.confirmInfo();
+					
+					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageObject
+					
+					signupinPage.register(_username);
+					
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					_emailAddress = catalog.getEmailAddress();
 					
-					if(_emailAddress.equals(_email)) {
-						System.out.println("PASS Correct signin email: "+_email);
+					if(_emailAddress.equals(_username)) {
+						System.out.println("PASS Correct signin email: "+_username);
 					} else {
 						fail("Fail - bad email address: "+_emailAddress);
 					}

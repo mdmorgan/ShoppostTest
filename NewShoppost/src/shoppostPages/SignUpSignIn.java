@@ -51,6 +51,10 @@ public class SignUpSignIn {
 	@FindBy (id = "confirmPasswordValidation")
 	private WebElement confirmPWError;
 	
+	@FindBy (id = "register")
+	private WebElement registerBtn;
+
+	
 	
 	public void signupFB(String email, String password) {   //sign up with passed-in credentials
 		FBButton.click();
@@ -119,6 +123,11 @@ public class SignUpSignIn {
 			errorMsg = redAdvisory.getText();
 		}
 		return errorMsg;
+	}
+	
+	public void register(String email)  {
+		emailField.sendKeys(email);
+		registerBtn.click();
 	}
 
 }
