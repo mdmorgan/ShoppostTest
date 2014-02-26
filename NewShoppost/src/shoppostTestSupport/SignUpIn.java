@@ -45,8 +45,6 @@ public class SignUpIn {
 		_td = td;
 		
 		homePage = PageFactory.initElements(driver, Home.class);
-		//signupPage = PageFactory.initElements(driver, SignUp.class);
-		//signinPage = PageFactory.initElements(driver, SignIn.class);
 		signupinPage = PageFactory.initElements(driver,  SignUpSignIn.class);
 		
 		//System.out.println(baseURL);
@@ -96,12 +94,9 @@ public class SignUpIn {
 			
 			gotoSignin();
 			Thread.sleep(1000);
-			
 			signupinPage.signinNow(_email, _password);
-			
-		    Thread.sleep(500);
-		    
-		  }
+			Thread.sleep(500);
+	  }
 	  
 	 
 	  

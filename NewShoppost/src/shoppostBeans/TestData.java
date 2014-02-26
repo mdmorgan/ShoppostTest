@@ -8,7 +8,7 @@ public class TestData {
 	private SignupinTests signupinTests;
 	private SignupinFBTests signupinFBTests;
 	private UITests uiTests;
-	private ProductCatalogTests productCatalogTests;
+	private CatalogTests catalogTests;
 	//private NewProductTests newProductTests;
 	//private ProductOverviewTests productOverviewTests;
 	//private ProductEditTests productEditTests;
@@ -26,7 +26,7 @@ public class TestData {
 	public SignupinTests getSignupinTests() { return signupinTests; }
 	public SignupinFBTests getSignupinFBTests() { return signupinFBTests; }
 	public UITests getUITests() { return uiTests; }
-	public ProductCatalogTests getProductCatalogTests() { return productCatalogTests; }
+	public CatalogTests getCatalogTests() { return catalogTests; }
 	//public NewProductTests getNewProductTests() { return newProductTests; }
 	//public ProductOverviewTests getProductOverviewTests() { return productOverviewTests; }
 	//public ProductEditTests getProductEditTests() { return productEditTests; }

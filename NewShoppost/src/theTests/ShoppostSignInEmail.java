@@ -164,6 +164,7 @@ public class ShoppostSignInEmail {
 					_email = _freshUser;  //initialize '_freshUser'
 					_password = _passkey;
 					signup.signInTest(_email, _password, 0);
+					
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					_emailAddress = catalog.getEmailAddress();
 					
