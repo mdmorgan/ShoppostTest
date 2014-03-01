@@ -57,6 +57,8 @@ public class ShareModal {
 	@FindBy (id = "previewButton")
 	private WebElement previewBtn;
 
+	@FindBy (id = "productName")
+	private WebElement productName;
 
 	
 	
@@ -80,6 +82,14 @@ public class ShareModal {
 		cancelDelete.click();
 		System.out.println("deleted successfully cancelled.");
 	}
-
+	public void shareFB() {
+		modalFacebook.click();
+	}
+	public void shareTwitter() {
+		modalTwitter.click();
+	}
+	public String getProductName() {
+		return productName.getText();
+	}
 
 }

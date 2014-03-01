@@ -236,7 +236,7 @@ public class ShoppostSignUpFB {
 					int _productCount = catalog.getProductCount();
 					move.moveToElement(catalog.hoverRandomProduct());
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					catalog.getRandomShare();
+					catalog.getShare();
 					Thread.sleep(2000);
 					//logout.logoutFromCat();
 					

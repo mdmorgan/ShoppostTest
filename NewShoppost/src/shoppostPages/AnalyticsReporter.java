@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.WebElement;
 
-public class Dashboard {
+public class AnalyticsReporter {
 
 	@FindBy(id = "accountMenu")
 	private WebElement acctmenu;

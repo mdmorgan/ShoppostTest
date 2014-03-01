@@ -51,6 +51,7 @@ public class ProductCatalog {
 	@FindBy (id = "errorMessage")
 	private WebElement errorMsg;
 	
+	
 	@FindBy (xpath = "//button[contains(@id,'stats')]")  //accurate product count
 	private List<WebElement> productStatsButtons;
 	
@@ -65,6 +66,7 @@ public class ProductCatalog {
 
 	@FindBy (className = "thumbnail")
 	private List<WebElement> thumbnails;
+	
 
 	
 	
@@ -94,7 +96,10 @@ public class ProductCatalog {
 		_index = rand.nextInt(productStatsButtons.size()-1);
 		return thumbnails.get(_index);
 	}
-	public void getRandomShare() {
+	public WebElement hoverProductAgain() {
+		return thumbnails.get(_index);
+	}
+	public void getShare() {
 		productShareButtons.get(_index).click();
 	}
 	public void getRandomStats() {
@@ -120,8 +125,9 @@ public class ProductCatalog {
 		closeAddProduct.click();
 	}
 	public String checkError() {
-		
 		return errorMsg.getText();
 	}
+	
+
 
 }
