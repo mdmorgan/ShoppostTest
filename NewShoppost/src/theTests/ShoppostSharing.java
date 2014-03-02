@@ -47,7 +47,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import shoppostBeans.LPData;
 import shoppostBeans.TestData;
 import shoppostBeans.SauceLabData;
-//import shoppostBeans.SharingTests;
+
 
 import shoppostPages.ShareSetUp;
 import shoppostPages.ProductCatalog;
@@ -80,7 +80,7 @@ public class ShoppostSharing {
 	private static SauceLabData _sld;
 	//private static AcctSetData _asd;
 	private static LPData _ltd;
-	private String userName, _username, _password, _freshUser, _usernameFB, _shareTitle, _usernameTwitter;
+	private String userName, _username, _password, _freshUser, _usernameFB, _shareTitle, _usernameTwitter, _tweet, _initialTweet;
 	private String accessCode, _passkey, _passkeyFB, _email, _currUrl, _currUrl_b, mwh_b, _mwh, _testCase, _emailAddress;
 	private DesiredCapabilities capabilities;
 	private WebDriverWait wait, wait2;
@@ -159,30 +159,29 @@ public class ShoppostSharing {
 		SignOut logout = new SignOut(driver);
 		Window win = new Window(driver);
 		
-		_usernameFB = _td.getCatalogTests().getUsernameFB();
+		_usernameFB = _td.getShareData().getUsernameFB();
 		System.out.println(_usernameFB);
-		//_usernameFB = _td.getSharingTests().getUsernameFB();
 		System.out.println("A");
-		_usernameTwitter = _td.getSharingTests().getUsernameTwitter();
-		_passkeyFB = _td.getSharingTests().getPasswordFB();
-		_username = _td.getSharingTests().getUsername();
-		_password = _td.getSharingTests().getPassword();
+		_usernameTwitter = _td.getShareData().getUsernameTwitter();
+		_passkeyFB = _td.getShareData().getPasswordFB();
+		_username = _td.getShareData().getUsername();
+		_password = _td.getShareData().getPassword();
 		_freshUser = "";
 		
 		//System.out.println("testLength is: "+TestRunner.getTests().length);
-		for (int k=0; k<_td.getSharingTests().getTests().size(); k++) {  //taking one testCase parameter at a time (this by-passes the need for TestRunner
+		for (int k=0; k<_td.getShareData().getTests().size(); k++) {  //taking one testCase parameter at a time (this by-passes the need for TestRunner
 		//for (int k=0; k<TestRunner.getTests().length; k++) {  //taking one testCase parameter at a time from cmd line
 	    //for (int k=0; k<1; k++) {   //just a quick test
 			//ss.takeTheShot(1, "platform");
   			//_testCase = TestRunner.getTests()[k];
-			_testCase = _td.getSharingTests().getTests().get(k);
+			_testCase = _td.getShareData().getTests().get(k);
 			//_testCase = "signupValid";
   			switch (_testCase) {
   			
 					
 					
 				case "confirmFBShare": // FB shares
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					//signup.signInTest(_email, _password, 0);
 					//
 					//analyticsReporter.toCatalog();
@@ -199,8 +198,8 @@ public class ShoppostSharing {
 					shareModal.shareFB();   //this opens a new tab for FB sharing now need to switch driver to that new window
 					driver.switchTo().window(win.changeWindowForShare(beforePopup));  //this clicks the link and switches windows because win.changeWindowForShare() returns a URL to switch to
 					shareSetUp.loginFacebook(_usernameFB, _passkeyFB);
-					shareSetUp.shareToTimeline(_td.getSharingTests().getShareMessage());
-					_shareTitle = shareSetUp.getShareTitle();
+					//shareSetUp.shareToTimeline(_td.getShareData().getShareMessage());
+					_shareTitle = shareSetUp.getShareTitleFB();
 					
 					//driver.close(); //closes current window - maybe	
 
@@ -223,7 +222,7 @@ public class ShoppostSharing {
 					break;
 					
 				case "confirmTwitterShare": // twitter shares
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					//signup.signInTest(_email, _password, 0);
 					//
 					//analyticsReporter.toCatalog();
@@ -237,23 +236,24 @@ public class ShoppostSharing {
 					_currUrl = driver.getCurrentUrl();  //(FACEBOOK test) get current url which is the share modal
 					_mwh = driver.getWindowHandle();   //get current window name
 					//now open new window
-					shareModal.shareTwitter();   //this opens a new tab for FB sharing now need to switch driver to that new window
+					shareModal.shareTwitter();   //this opens a new tab for twitter sharing now need to switch driver to that new window
 					driver.switchTo().window(win.changeWindowForShare(beforePopup));  //this clicks the link and switches windows because win.changeWindowForShare() returns a URL to switch to
-					shareSetUp.addMoreTweet(_td.getSharingTests().getMoreTweet());
-					shareSetUp.loginTweetTwitter(_usernameTwitter, _passkeyFB);
-					_shareTitle = shareSetUp.getShareTitle();
 					
+					_initialTweet = shareSetUp.getTweet();
+					shareSetUp.addMoreTweet(_td.getShareData().getMoreTweet());
+					shareSetUp.loginTweetTwitter(_usernameTwitter, _passkeyFB);
 					//driver.close(); //closes current window - maybe	
 
 					driver.switchTo().window(_mwh);  //back to modal
 					driver.get(_currUrl);   //run with modal
 					move.moveToElement(catalog.hoverProductAgain());
 					catalog.getShare();
-					System.out.println("name = "+shareModal.getProductName());
-					if(_shareTitle.equals(shareModal.getProductName())) {
-						System.out.println("PASS Correct data to FB: "+_shareTitle);
+					shareModal.goLink();
+					System.out.println("tweet = "+_initialTweet);
+					if(_initialTweet.equals(shareModal.getProductName()+" "+shareModal.getLPUrl())) {
+						System.out.println("PASS Correct data to twitter: "+_initialTweet);
 					} else {
-						fail("FAIL - invalid data to FB: "+_shareTitle);
+						fail("FAIL - invalid data to tiwtter: "+_initialTweet);
 					}
 					
 					
@@ -263,36 +263,52 @@ public class ShoppostSharing {
 					
 					break;
 					
-				case "addProductCancelShare": // see error message
+				case "confirmPinterestShare": // see error message
 					
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					//signup.signInTest(_email, _password, 0);
-					//analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
+					//
 					//analyticsReporter.toCatalog();
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					preCt = catalog.getProductCount();
-					catalog.addProduct();
-					Thread.sleep(1000);
-					catalog.scrapeCancel(_td.getSharingTests().getProductURL());  //
-					Thread.sleep(1000);
-					postCt = catalog.getProductCount(); //closes modal window
-					Thread.sleep(1000);
 					
-					if(preCt == postCt) {
-						System.out.println("PASS - no new products added.");
-					} else {
-						fail("FAIL - product count is off by: "+(preCt - postCt));
-					}
+					_productCount = catalog.getProductCount();
+					move.moveToElement(catalog.hoverRandomProduct());  //move to random product
+					
+					catalog.getShare(); //open share modal 
+					//collect info about the windows
+					beforePopup = driver.getWindowHandles();   //collect windows and then send them to the change window class
+					_currUrl = driver.getCurrentUrl();  //(FACEBOOK test) get current url which is the share modal
+					_mwh = driver.getWindowHandle();   //get current window name
+					//now open new window
+					shareModal.sharePinterest();   //this opens a new tab for pinterst sharing now need to switch driver to that new window
+					driver.switchTo().window(win.changeWindowForShare(beforePopup));  //this clicks the link and switches windows because win.changeWindowForShare() returns a URL to switch to
+					
+					_initialTweet = shareSetUp.getTweet();
+					shareSetUp.addMoreTweet(_td.getShareData().getMoreTweet());
+					shareSetUp.loginTweetTwitter(_usernameTwitter, _passkeyFB);
+					//driver.close(); //closes current window - maybe	
 
+					driver.switchTo().window(_mwh);  //back to modal
+					driver.get(_currUrl);   //run with modal
+					move.moveToElement(catalog.hoverProductAgain());
+					catalog.getShare();
+					shareModal.goLink();
+					System.out.println("tweet = "+_initialTweet);
+					if(_initialTweet.equals(shareModal.getProductName()+" "+shareModal.getLPUrl())) {
+						System.out.println("PASS Correct data to twitter: "+_initialTweet);
+					} else {
+						fail("FAIL - invalid data to tiwtter: "+_initialTweet);
+					}
+					
+					
+					
+					Thread.sleep(1000);
 					//logout.logoutFromCat();
 					
 					break;
 
 
 				case "shareModalTest": //Opens share modal window for random product
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					Actions move2 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -311,13 +327,13 @@ public class ShoppostSharing {
 					
 				case "addProductViaDashboard": 	
 					
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
 					signup.signInTest(_email, _password, 0);
 					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
 					analyticsReporter.addProduct();
 					Thread.sleep(1000);
-					catalog.scrape(_td.getSharingTests().getProductURL());  //this should open the share modal
+					catalog.scrape(_td.getShareData().getProductURL());  //this should open the share modal
 					Thread.sleep(1000);
 					catalog.closeAdd();
 					
@@ -327,7 +343,7 @@ public class ShoppostSharing {
 					break;
 					
 				case "productDisplay": 	
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
 					signup.signInTest(_email, _password, 0);
 					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
@@ -335,7 +351,7 @@ public class ShoppostSharing {
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					catalog.addProduct();
 					Thread.sleep(1000);
-					catalog.scrape(_td.getSharingTests().getProductURL());  //bad URL
+					catalog.scrape(_td.getShareData().getProductURL());  //bad URL
 					Thread.sleep(1000);
 					catalog.closeAdd();
 					
@@ -354,7 +370,7 @@ public class ShoppostSharing {
 					
 					
 				case "noProductDisplay": 
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
 					//signup.signInTest(_email, _password, 0);
 					//analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
@@ -377,7 +393,7 @@ public class ShoppostSharing {
 					break;
 				
 				case "deleteProductViaHover": 
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					Actions move3 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -392,7 +408,7 @@ public class ShoppostSharing {
 
 				
 				case "deleteProductViaModalShare": 
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					Actions move4 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -409,7 +425,7 @@ public class ShoppostSharing {
 
 				
 				case "deleteProductViaModalStats": 
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					Actions move5 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -428,7 +444,7 @@ public class ShoppostSharing {
 
 				
 				case "cancelDeleteProduct": 
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					Actions move6 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -448,7 +464,7 @@ public class ShoppostSharing {
 
 				
 				case "viewRandomStats": //View random product Stats from product hover
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					Actions movea = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -464,7 +480,7 @@ public class ShoppostSharing {
 					break;
 					
 				case "viewRandomStatsViaShare": //View random product Stats from share Modal
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					Actions move7 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -481,7 +497,7 @@ public class ShoppostSharing {
 					break;
 
 				case "viewSingleStatsViaDashMS": //View product Stats from Dashboard most shared
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
 					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
@@ -495,7 +511,7 @@ public class ShoppostSharing {
 					break;
 
 				case "viewSingleStatsViaDashMR": //View product Stats from Dashboard most referred
-					signup.helloPlatform(_td.getSharingTests().getBaseUrl());
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
 					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 

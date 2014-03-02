@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="C:/Users/DIY/Dropbox/MarkFolder/TestingEclipseJava/TestPhysical/EclipseWork/selenium-java-2.39.0/selenium-2.39.0/libs/apache-mime4j-0.6.jar"/>
 	<classpathentry kind="lib" path="C:/Users/DIY/Dropbox/MarkFolder/TestingEclipseJava/TestPhysical/EclipseWork/selenium-java-2.39.0/selenium-2.39.0/libs/bsh-1.3.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/DIY/Dropbox/MarkFolder/TestingEclipseJava/TestPhysical/EclipseWork/selenium-java-2.39.0/selenium-2.39.0/libs/cglib-nodep-2.1_3.jar"/>
@@ -44,5 +43,6 @@
 	<classpathentry kind="lib" path="C:/Users/DIY/Dropbox/MarkFolder/TestingEclipseJava/TestPhysical/EclipseWork/google-gson-2.2.2-release/google-gson-2.2.2/gson-2.2.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/DIY/Dropbox/MarkFolder/TestingEclipseJava/TestPhysical/EclipseWork/google-gson-2.2.2-release/google-gson-2.2.2/gson-2.2.2-javadoc.jar"/>
 	<classpathentry kind="lib" path="C:/Users/DIY/Dropbox/MarkFolder/TestingEclipseJava/TestPhysical/EclipseWork/google-gson-2.2.2-release/google-gson-2.2.2/gson-2.2.2-sources.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

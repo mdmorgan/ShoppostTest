@@ -59,6 +59,9 @@ public class ShareModal {
 
 	@FindBy (id = "productName")
 	private WebElement productName;
+	
+	@FindBy (id = "linkInput")
+	private WebElement lpUrl;
 
 	
 	
@@ -88,8 +91,17 @@ public class ShareModal {
 	public void shareTwitter() {
 		modalTwitter.click();
 	}
+	public void sharePinterest() {
+		modalPinterest.click();
+	}
 	public String getProductName() {
 		return productName.getText();
+	}
+	public void goLink() {
+		modalLinkTab.click();
+	}
+	public String getLPUrl() {
+		return lpUrl.getText();
 	}
 
 }

@@ -25,7 +25,7 @@ public class ShareSetUp {
 	private WebElement pickFriend;
 	
 	@FindBy (className = "UIShareStage_Title")
-	private WebElement shareTitle;
+	private WebElement shareTitleFB;
 	
 	@FindBy (id = "email")
 	private WebElement fbEmail;
@@ -37,7 +37,7 @@ public class ShareSetUp {
 	private WebElement fbLogin;
 	
 	@FindBy(id = "status")
-	private WebElement twitterStatus;
+	private WebElement tweet;
 	
 	@FindBy(id = "username_or_email")
 	private WebElement twitterUser;
@@ -65,12 +65,16 @@ public class ShareSetUp {
 		friendEntry.sendKeys(friend);
 		pickFriend.click();
 	}
-	public String getShareTitle() {
-		return shareTitle.getText();
+	public String getShareTitleFB() {
+		return shareTitleFB.getText();
 	}
+	public String getTweet() {
+		return tweet.getText();
+	}
+	
 	public void addMoreTweet(String moreTweet) {
-		twitterStatus.click();
-		twitterStatus.sendKeys(moreTweet);
+		tweet.click();
+		tweet.sendKeys(moreTweet);
 	}
 	public void loginTweetTwitter(String twitUsername, String twitPass) {
 		twitterUser.sendKeys(twitUsername);

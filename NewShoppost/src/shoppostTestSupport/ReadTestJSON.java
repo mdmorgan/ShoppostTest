@@ -32,11 +32,11 @@ public class ReadTestJSON {
 		td = gson.fromJson(br, TestData.class);
 		//Product product = pd.getProduct();
 		
-		_name = td.getProducts().getName();
-		_description = td.getProducts().getDescription();
-		_mediaType1 = td.getProducts().getMedia().get(0).getType();
-		_tag1 = td.getProducts().getTags().get(0);
-		_option1value = td.getProducts().getOptions().get(0).getValues().get(0);
+		//_name = td.getProducts().getName();
+		//_description = td.getProducts().getDescription();
+		//_mediaType1 = td.getProducts().getMedia().get(0).getType();
+		//_tag1 = td.getProducts().getTags().get(0);
+		//_option1value = td.getProducts().getOptions().get(0).getValues().get(0);
 		//System.out.println(_name);
 		//System.out.println(_description);
 		//System.out.println(_mediaType1);

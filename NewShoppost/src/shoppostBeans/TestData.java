@@ -9,7 +9,7 @@ public class TestData {
 	private SignupinFBTests signupinFBTests;
 	private UITests uiTests;
 	private CatalogTests catalogTests;
-	private SharingTests sharingTests;
+	private ShareData shareData;
 	private NewUserShareTests newUserShareTests;
 	private LandingPageTests landingPageTests;
 	private OrdersTests ordersTests;
@@ -23,7 +23,7 @@ public class TestData {
 	public SignupinFBTests getSignupinFBTests() { return signupinFBTests; }
 	public UITests getUITests() { return uiTests; }
 	public CatalogTests getCatalogTests() { return catalogTests; }
-	public SharingTests getSharingTests() { return sharingTests; }
+	public ShareData getShareData() { return shareData; }
 	public NewUserShareTests getNewUserShareTests() { return newUserShareTests; }
 	public LandingPageTests getLandingPageTests() { return landingPageTests; }
 	public OrdersTests getOrdersTests() { return ordersTests; }
