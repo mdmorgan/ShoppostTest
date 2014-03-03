@@ -14,6 +14,7 @@ public class ShareData {
 	private String password;
 	private String usernameTwitter;
 	private String passwordGoog;
+	private String googComment;
 	private String shareMessage;
 	private String moreTweet;
 	private List<String> tests;
@@ -33,6 +34,7 @@ public class ShareData {
 	public String getPassword() { return password; }
 	public String getUsernameTwitter() { return usernameTwitter; }
 	public String getPasswordGoog() { return passwordGoog; }
+	public String getGoogComment() { return googComment; }
 	public String getShareMessage() { return shareMessage; }
 	public String getMoreTweet() { return moreTweet; }
 	public List<String> getTests() { return tests; }

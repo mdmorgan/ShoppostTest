@@ -94,6 +94,9 @@ public class ShareModal {
 	public void sharePinterest() {
 		modalPinterest.click();
 	}
+	public void shareGooglePlus() {
+		modalGooglePlus.click();
+	}
 	public String getProductName() {
 		return productName.getText();
 	}

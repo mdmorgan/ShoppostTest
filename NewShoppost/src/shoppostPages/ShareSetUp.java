@@ -28,7 +28,7 @@ public class ShareSetUp {
 	private WebElement shareTitleFB;
 	
 	@FindBy (id = "email")
-	private WebElement fbEmail;
+	private WebElement emailFB;
 	
 	@FindBy (id = "pass")
 	private WebElement fbPassword;
@@ -48,9 +48,42 @@ public class ShareSetUp {
 	@FindBy(xpath = "//fieldset[@class='submit']/input[@id='char-count']/following-sibling::input")
 	private WebElement twitterSignin;
 	
+	@FindBy(className = "alreadyAPinner")
+	private WebElement gotPinAcct;
+	
+	@FindBy(className = "email")
+	private WebElement pinEmail;
+	
+	@FindBy(name = "password")
+	private WebElement pinPass;
+	
+	@FindBy(id = "pinFormDescription")
+	private WebElement pinDescrip;
+	
+	@FindBy(xpath = "//div[@class='formFooterButtons']/button[contains(@class,'primary')]")
+	private WebElement pinItLogin;
+	
+	@FindBy(id = "Email")
+	private WebElement emailGoog;
+	
+	@FindBy(id = "Passwd")
+	private WebElement googPassword;
+	
+	@FindBy(id = "signIn")
+	private WebElement googSigninBtn;
+	
+	@FindBy(id = ":0.f")
+	private WebElement googComment;
+	
+	@FindBy(className = "wI")
+	private WebElement googTitle;
+	
+	@FindBy(xpath = "//td[@class='bI']/div[contains(@class,'d-k-l')]")
+	private WebElement shareGoogBtn;
+	
 
 	public void loginFacebook(String fbUsername, String fbPass) {
-		fbEmail.sendKeys(fbUsername);
+		emailFB.sendKeys(fbUsername);
 		fbPassword.sendKeys(fbPass);
 		fbLogin.click();
 	}
@@ -71,7 +104,12 @@ public class ShareSetUp {
 	public String getTweet() {
 		return tweet.getText();
 	}
-	
+	public String getPinTitle() {
+		return pinDescrip.getText();
+	}
+	public void pinToPinterest() {
+		pinItLogin.click();
+	}
 	public void addMoreTweet(String moreTweet) {
 		tweet.click();
 		tweet.sendKeys(moreTweet);
@@ -81,6 +119,27 @@ public class ShareSetUp {
 		twitterPass.sendKeys(twitPass);
 		twitterSignin.click();
 	}
+	public void havePinAcct() {
+		gotPinAcct.click();
+	}
+	public void loginPinterest(String username, String password) {
+		pinEmail.sendKeys(username);
+		pinPass.sendKeys(password);
+		pinItLogin.click();
+	}
+	public void signinGoogplus(String username, String password) {
+		emailGoog.sendKeys(username);
+		googPassword.sendKeys(password);
+		googSigninBtn.click();
+	}
+	public String getGoogTitle() {
+		return googTitle.getText();
+	}
+	public void shareToGoog(String comment) {
+		googComment.sendKeys(comment);
+		shareGoogBtn.click();
+	}
+	
 	
 	
 	

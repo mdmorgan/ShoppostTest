@@ -82,6 +82,7 @@ public class ShoppostSharing {
 	private static LPData _ltd;
 	private String userName, _username, _password, _freshUser, _usernameFB, _shareTitle, _usernameTwitter, _tweet, _initialTweet;
 	private String accessCode, _passkey, _passkeyFB, _email, _currUrl, _currUrl_b, mwh_b, _mwh, _testCase, _emailAddress;
+	private String _pinTitle, _googPlusPW, _googTitle;
 	private DesiredCapabilities capabilities;
 	private WebDriverWait wait, wait2;
 	private java.awt.Dimension screenSize;
@@ -183,8 +184,7 @@ public class ShoppostSharing {
 				case "confirmFBShare": // FB shares
 					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					//signup.signInTest(_email, _password, 0);
-					//
-					//analyticsReporter.toCatalog();
+					analyticsReporter.toCatalog();
 					
 					_productCount = catalog.getProductCount();
 					move.moveToElement(catalog.hoverRandomProduct());  //move to random product
@@ -224,8 +224,7 @@ public class ShoppostSharing {
 				case "confirmTwitterShare": // twitter shares
 					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					//signup.signInTest(_email, _password, 0);
-					//
-					//analyticsReporter.toCatalog();
+					analyticsReporter.toCatalog();
 					
 					_productCount = catalog.getProductCount();
 					move.moveToElement(catalog.hoverRandomProduct());  //move to random product
@@ -233,7 +232,7 @@ public class ShoppostSharing {
 					catalog.getShare(); //open share modal 
 					//collect info about the windows
 					beforePopup = driver.getWindowHandles();   //collect windows and then send them to the change window class
-					_currUrl = driver.getCurrentUrl();  //(FACEBOOK test) get current url which is the share modal
+					_currUrl = driver.getCurrentUrl();  // get current url which is the share modal
 					_mwh = driver.getWindowHandle();   //get current window name
 					//now open new window
 					shareModal.shareTwitter();   //this opens a new tab for twitter sharing now need to switch driver to that new window
@@ -267,8 +266,7 @@ public class ShoppostSharing {
 					
 					signup.helloPlatform(_td.getShareData().getBaseUrl());
 					//signup.signInTest(_email, _password, 0);
-					//
-					//analyticsReporter.toCatalog();
+					analyticsReporter.toCatalog();
 					
 					_productCount = catalog.getProductCount();
 					move.moveToElement(catalog.hoverRandomProduct());  //move to random product
@@ -276,27 +274,30 @@ public class ShoppostSharing {
 					catalog.getShare(); //open share modal 
 					//collect info about the windows
 					beforePopup = driver.getWindowHandles();   //collect windows and then send them to the change window class
-					_currUrl = driver.getCurrentUrl();  //(FACEBOOK test) get current url which is the share modal
+					_currUrl = driver.getCurrentUrl();  //get current url which is the share modal
 					_mwh = driver.getWindowHandle();   //get current window name
 					//now open new window
 					shareModal.sharePinterest();   //this opens a new tab for pinterst sharing now need to switch driver to that new window
 					driver.switchTo().window(win.changeWindowForShare(beforePopup));  //this clicks the link and switches windows because win.changeWindowForShare() returns a URL to switch to
 					
-					_initialTweet = shareSetUp.getTweet();
-					shareSetUp.addMoreTweet(_td.getShareData().getMoreTweet());
-					shareSetUp.loginTweetTwitter(_usernameTwitter, _passkeyFB);
+					shareSetUp.havePinAcct();
+					Thread.sleep(1000);
+					shareSetUp.loginPinterest(_usernameFB, _passkeyFB);
+					_pinTitle = shareSetUp.getPinTitle();  //
+					shareSetUp.pinToPinterest();
 					//driver.close(); //closes current window - maybe	
 
 					driver.switchTo().window(_mwh);  //back to modal
 					driver.get(_currUrl);   //run with modal
 					move.moveToElement(catalog.hoverProductAgain());
 					catalog.getShare();
-					shareModal.goLink();
-					System.out.println("tweet = "+_initialTweet);
-					if(_initialTweet.equals(shareModal.getProductName()+" "+shareModal.getLPUrl())) {
-						System.out.println("PASS Correct data to twitter: "+_initialTweet);
+					//shareModal.goLink();
+					System.out.println("pinTitle = "+_pinTitle);
+					System.out.println("productName = "+shareModal.getProductName());
+					if(_pinTitle.equals(shareModal.getProductName())) {
+						System.out.println("PASS Correct data to twitter: "+_pinTitle);
 					} else {
-						fail("FAIL - invalid data to tiwtter: "+_initialTweet);
+						fail("FAIL - invalid data to tiwtter: "+_pinTitle);
 					}
 					
 					
@@ -305,6 +306,52 @@ public class ShoppostSharing {
 					//logout.logoutFromCat();
 					
 					break;
+				
+				case "confirmGooglePlusShare": // see error message
+					
+					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					//signup.signInTest(_email, _password, 0);
+					
+					analyticsReporter.toCatalog();
+					
+					_productCount = catalog.getProductCount();
+					move.moveToElement(catalog.hoverRandomProduct());  //move to random product
+					
+					catalog.getShare(); //open share modal 
+					//collect info about the windows
+					beforePopup = driver.getWindowHandles();   //collect windows and then send them to the change window class
+					_currUrl = driver.getCurrentUrl();  //get current url which is the share modal
+					_mwh = driver.getWindowHandle();   //get current window name
+					//now open new window
+					shareModal.shareGooglePlus();   //this opens a new tab for googlePlus sharing now need to switch driver to that new window
+					driver.switchTo().window(win.changeWindowForShare(beforePopup));  //this clicks the link and switches windows because win.changeWindowForShare() returns a URL to switch to
+					
+					shareSetUp.signinGoogplus(_usernameFB, _td.getShareData().getPasswordGoog());
+					Thread.sleep(8000);
+					_googTitle = shareSetUp.getGoogTitle();
+					shareSetUp.shareToGoog(_td.getShareData().getGoogComment());  //
+					//driver.close(); //closes current window - maybe	
+
+					driver.switchTo().window(_mwh);  //back to modal
+					driver.get(_currUrl);   //run with modal
+					move.moveToElement(catalog.hoverProductAgain());
+					catalog.getShare();
+					//shareModal.goLink();
+					System.out.println("googTitle = "+_googTitle);
+					System.out.println("productName = "+shareModal.getProductName());
+					if(_googTitle.equals(shareModal.getProductName())) {
+						System.out.println("PASS Correct data to twitter: "+_googTitle);
+					} else {
+						fail("FAIL - invalid data to tiwtter: "+_googTitle);
+					}
+					
+					
+					
+					Thread.sleep(1000);
+					//logout.logoutFromCat();
+					
+					break;
+
 
 
 				case "shareModalTest": //Opens share modal window for random product
