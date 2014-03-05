@@ -205,7 +205,7 @@ public class ShoppostSignInEmail {
 					
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
 					
-					_errorMsg = signupinPage.checkPWError();
+					_errorMsg = signupinPage.getRedAdvisory();
 					if(_errorMsg.equals("The Password field is required.")) {
 						System.out.println("PASS Correct error advisory: "+_errorMsg);
 					} else {

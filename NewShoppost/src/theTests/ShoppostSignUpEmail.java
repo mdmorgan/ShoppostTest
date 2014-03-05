@@ -48,6 +48,7 @@ import shoppostBeans.LPData;
 import shoppostBeans.TestData;
 import shoppostBeans.SauceLabData;
 
+import shoppostPages.AnalyticsReporter;
 import shoppostPages.ProductCatalog;
 import shoppostPages.SignUpSignIn;
 import shoppostPages.UserAgreement;
@@ -84,6 +85,7 @@ public class ShoppostSignUpEmail {
 	private SignUpIn signup;
 	private SignUpSignIn signupinPage;
 	private ProductCatalog catalog;
+	private AnalyticsReporter analyticsReporter;
 	private UserAgreement userAgreementPage;
 	private String _errorMsg;
 	//private ScreenShot ss;
@@ -141,6 +143,10 @@ public class ShoppostSignUpEmail {
 		signup = new SignUpIn(driver, _td);   //signup methods
 		SignOut logout = new SignOut(driver);
 		
+		catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+		analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
+		signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
+		
 		_username = _td.getSignupinTests().getUsername();
 		_passkey = _td.getSignupinTests().getHalfPassword();
 		_freshUser = "";
@@ -160,17 +166,16 @@ public class ShoppostSignUpEmail {
 				case "signupValid": //loads home page then redirects to signup page
 					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
 					
-					r = rand.nextInt(10000);
+					r = rand.nextInt(1000);
 					_freshUser = _username+r+"@sharklasers.com";  //make fake email with random number (a brand new user)
 					_email = _freshUser;  //initialize '_freshUser'
 					
 					_password = _passkey+_passkey;
+					System.out.println(_email);
 					signup.signUpTest(_email, _password, 0);
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					Thread.sleep(1000);
+					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+					Thread.sleep(1500);
 					_emailAddress = catalog.getEmailAddress();
-					System.out.println("from catalog page: "+_emailAddress);
-					System.out.println("from input: "+_email);
 					if(_emailAddress.equals(_email)) {
 						System.out.println("PASS Correct signup email: "+_email);
 					} else {
@@ -178,22 +183,22 @@ public class ShoppostSignUpEmail {
 					}
 					
 					Thread.sleep(500);
-					logout.logoutFromCat();
-					
+					catalog.openAcctMenu();
+					catalog.signOut();
 					break;
 					
 				case "alreadyExist": 
 					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
-					_email = _username+".com"; 
+					_email = _td.getSignupinTests().getExistingUser(); 
 					if (_freshUser != "") { _email = _freshUser; }  //if there is a 'freshUser' then log in with same
 					_password = _passkey+_passkey;
 					System.out.println(_email+", "+_password);
 					signup.signUpTest(_email, _password, 0);
 					
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
+					//signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
 					//System.out.println("bb");
-					
-					_errorMsg = signupinPage.getEmailTaken();
+					Thread.sleep(500);
+					_errorMsg = signupinPage.getRedAdvisory();
 					if(_errorMsg.equals("Name "+_email+" is already taken.")) {
 						System.out.println("PASS Correct error advisory: "+_errorMsg);
 					} else {
@@ -203,16 +208,16 @@ public class ShoppostSignUpEmail {
 					
 					break;
 					
-				case "signupBlankEmail": 	
+				case "signupBlankEmail": 	//this will fail - issue in backlog 3/5/14
 					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
 					_password = _passkey+_passkey;
 					signup.signUpTest("", _password, 0);
-					Thread.sleep(1000);
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
+					Thread.sleep(1500);
+					//signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
 					//System.out.println("bb");
 					
 					_errorMsg = signupinPage.checkEmailError();
-					if(_errorMsg.equals("The Email address field is required.")) {
+					if(_errorMsg.equals("Email address field is required.")) {
 						System.out.println("PASS Correct error advisory: "+_errorMsg);
 					} else {
 						fail("Fail - requires blank email error advisory not: "+_errorMsg);
@@ -225,18 +230,17 @@ public class ShoppostSignUpEmail {
 					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
 					_password = _passkey+_passkey;
 					signup.signUpTest(_username, _password, 0);
-					Thread.sleep(1000);
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject for errors
+					//signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject for errors
 					//System.out.println("bb");
-					
+					Thread.sleep(1500);
 					_errorMsg = signupinPage.checkEmailError();
-					if(_errorMsg.equals("Must be a valid email address.")) {
+					if(_errorMsg.equals("Please enter a valid email address.")) {
 						System.out.println("PASS Correct error advisory: "+_errorMsg);
 					} else {
 						fail("Fail - requires invalid email error advisory not: "+_errorMsg);
 					}
 					break;
-				case "signupNoPW": 
+				case "signupNoPW": //this will fail - issue in backlog 3/5/14
 					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
 					
 					r = rand.nextInt(10000);
@@ -247,7 +251,7 @@ public class ShoppostSignUpEmail {
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
 					//System.out.println("bb");
 					
-					_errorMsg = signupinPage.checkPWError();
+					_errorMsg = signupinPage.getRedAdvisory();
 					if(_errorMsg.equals("The Password field is required.")) {
 						System.out.println("PASS Correct error advisory: "+_errorMsg);
 					} else {
@@ -264,10 +268,11 @@ public class ShoppostSignUpEmail {
 					_password = _passkey;
 					signup.signUpTest(_email, _password, 0);
 					
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
+					//signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
 					//System.out.println("bb");
+					Thread.sleep(1500);
 					
-					_errorMsg = signupinPage.checkPWError();
+					_errorMsg = signupinPage.getRedAdvisory();
 					if(_errorMsg.equals("The Password must be at least 6 characters long.")) {
 						System.out.println("PASS Correct error advisory: "+_errorMsg);
 					} else {
@@ -285,82 +290,15 @@ public class ShoppostSignUpEmail {
 					
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
 					//System.out.println("bb");
-					
-					_errorMsg = signupinPage.checkMatchError();
-					if(_errorMsg.equals("'Repeat password' and 'Password' do not match.")) {
+					Thread.sleep(1500);
+					_errorMsg = signupinPage.getRedAdvisory();
+					if(_errorMsg.equals("The password and confirmation password do not match.")) {
 						System.out.println("PASS Correct error advisory: "+_errorMsg);
 					} else {
 						fail("Fail - requires password mismatch error advisory not: "+_errorMsg);
 					}
 					break;
 					
-				case "userAgreement": 
-					Window win = new Window(driver);
-					
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
-					r = rand.nextInt(10000);
-					_email = _username+r+"@sharklasers.com";  //make fake email with random number (a brand new user)_email = _username+r+".com";  //make fake email with random number
-					_password = _passkey+_passkey;
-					signup.gotoSignup();
-					//signupPage = PageFactory.initElements(driver, SignUp.class);  //instantiate the pageOject
-					
-					//signupPage.toAgreement();  
-					
-					userAgreementPage = PageFactory.initElements(driver, UserAgreement.class);
-					
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[@for='agreementCheckbox']")));
-					_currUrl = driver.getCurrentUrl();  //
-					
-					String mwh = driver.getWindowHandle();   //get current window name
-					driver.switchTo().window(win.changeWindow(By.xpath("//label[@for='agreementCheckbox']/p/a")));
-					
-					try {
-						
-						wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='container']")));  //wait for user agreement to show
-						assertEquals("Shoppost - End User License Agreement",driver.getTitle());
-						System.out.println("User Agreement confirmed.");
-					}
-					catch (TimeoutException e) {
-						System.out.println("NO Agreement Page!");
-					}
-					catch (ComparisonFailure ex) {
-						
-						System.out.println("Different Error Message Found");
-					}
-					finally { driver.close(); }
-					
-					//Thread.sleep(1000);
-					//driver.close(); //close agreement window
-					
-					driver.switchTo().window(mwh);  //go back to signup page
-					driver.get(_currUrl);
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
-				
-					break;
-				
-				case "alreadyMemberBtn": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl()+"sign-up");
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
-					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
-					Thread.sleep(500);
-					
-					try {
-						wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("loginBtn")));  //waiting for sign up page
-						driver.findElement(By.id("email_input"));
-						System.out.println("Member redirect confirmed.");
-					}
-					catch (TimeoutException e) {
-						System.out.println("ERROR! No Sign In Page!");
-					}
-					catch (ElementNotVisibleException ex) {
-						
-						System.out.println("ERROR! Email input not found");
-					}
-					finally {}
-					driver.get(_td.getSignupinTests().getBaseUrl()+"/sign-up"); 
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
-					//driver.close();
-					break;
 				
 					
 					
@@ -374,51 +312,6 @@ public class ShoppostSignUpEmail {
 	}
 	
 
-	/**
-	public void checkSignupError(String em) throws Exception {
-		String _errorMessage = em;
-		wait2 = new WebDriverWait(driver, 5);
-		
-		if (driver.findElement(By.id("errorMsg")).getText().equals(_errorMessage)) {
-			System.out.println(_errorMessage+" error displayed.");
-			
-		} else if (driver.findElement(By.xpath("//div[@id='emailField']/span")).isDisplayed()||driver.findElement(By.xpath("//div[@id='emailField']/span")).getText().equals(_errorMessage)) {
-			System.out.println(_errorMessage+" error displayed.");
-		} else if (driver.findElement(By.xpath("//div[@id='passwordField']/span")).isDisplayed()||driver.findElement(By.xpath("//div[@id='passwordField']/span")).getText().equals(_errorMessage)) {
-			System.out.println(_errorMessage+" error displayed.");
-		} else if (driver.findElement(By.xpath("//div[@id='repeatPasswordField']/span")).isDisplayed()||driver.findElement(By.xpath("//div[@id='repeatPasswordField']/span")).getText().equals(_errorMessage)) {
-			System.out.println(_errorMessage+" error displayed.");
-		} else if (driver.findElement(By.xpath("//div[@id='agreementField']/span")).isDisplayed()||driver.findElement(By.xpath("//div[@id='agreementField']/span")).getText().equals(_errorMessage)) {
-			System.out.println(_errorMessage+" error displayed.");
-		} else {
-			System.out.println("No message was found.");
-		}
-		
-		
-	}
-	
-	public void checkSigninError (String em) throws Exception {
-		String _error = em;
-		wait2 = new WebDriverWait(driver, 5);
-		
-		try {
-			driver.findElement(By.xpath("//div[@id='main-login']/div[contains(@class,'errorMessage')]"));
-			if (driver.findElement(By.xpath("//div[@id='main-login']/div[contains(@class,'errorMessage')]")).getText().equals(_error)) {
-				System.out.println("'"+_error+"' error displayed.");
-			}
-		} catch (NoSuchElementException e) {
-			if (driver.findElement(By.xpath("//div[@id='emailWrapper']/span")).isDisplayed()||driver.findElement(By.xpath("//div[@id='emailWrapper']/span")).getText().equals(_error)) {
-				System.out.println("'"+_error+"' error displayed.");
-			} else if (driver.findElement(By.xpath("//div[@id='passwordWrapper']/span")).isDisplayed()||driver.findElement(By.xpath("//div[@id='passwordWrapper']/span")).getText().equals(_error)) {
-				System.out.println("'"+_error+"' error displayed.");
-			} else {
-				System.out.println("No message was found.");
-			}
-
-		}
-	
-		
-	}**/
 	
 	
 	@After

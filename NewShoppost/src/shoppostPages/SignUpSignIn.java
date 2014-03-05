@@ -44,12 +44,9 @@ public class SignUpSignIn {
 	
 	@FindBy (id = "validation")
 	private WebElement redAdvisory;
-	
-	@FindBy (id = "passwordValidation")
-	private WebElement passwordError;
-	
-	@FindBy (id = "confirmPasswordValidation")
-	private WebElement confirmPWError;
+	//@FindBy (xpath = "//li[contains(@class,'validation-summary-errors')]")
+	@FindBy (xpath = "//ul[@id='validation']/li")
+	private WebElement redAdvisoryMsg;
 	
 	@FindBy (id = "register")
 	private WebElement registerBtn;
@@ -78,26 +75,12 @@ public class SignUpSignIn {
 		}
 		return errorEmailMsg;
 	}
-	public String getEmailTaken() {
-		String errorEmailMsg = "";
-		if (redAdvisory.isDisplayed()) {
-			errorEmailMsg = redAdvisory.getText();
+	public String getRedAdvisory() {
+		String errorMsg = "";
+		if (redAdvisoryMsg.isDisplayed()) {
+			errorMsg = redAdvisoryMsg.getText();
 		}
-		return errorEmailMsg;
-	}
-	public String checkMatchError() {
-		String errorPWMsg = "";
-		if (confirmPWError.isDisplayed()) {
-			errorPWMsg = confirmPWError.getText();
-		}
-		return errorPWMsg;
-	}
-	public String checkPWError() {
-		String errorPWMsg = "";
-		if (passwordError.isDisplayed()) {
-			errorPWMsg = passwordError.getText();
-		}
-		return errorPWMsg;
+		return errorMsg;
 	}
 	
 	public void signinNow(String email, String password) {  //no 'remember me'

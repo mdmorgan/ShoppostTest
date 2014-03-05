@@ -77,7 +77,7 @@ public class SignUpIn {
 		int _aa = aa;
 		
 		gotoSignup(); //homePage.toSignup();  //navigates to sign up page
-		Thread.sleep(1000);
+		Thread.sleep(1500);
 		
 	    if (_aa == 1) { 
 	    	signupinPage.signupNoMatch(_email, _password);   //sends mismatch password

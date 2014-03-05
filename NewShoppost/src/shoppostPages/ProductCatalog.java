@@ -84,9 +84,7 @@ public class ProductCatalog {
 		acctSettings.click();
 	}
 	public String getEmailAddress() {
-		String emailAddress = "";
-		emailAddress = acctName.getText();
-		return emailAddress;
+		return acctBtn.getText();
 	}
 	public int getProductCount() {
 		//System.out.println("number of products: "+productStatsButtons.size());

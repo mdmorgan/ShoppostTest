@@ -378,7 +378,7 @@ public class ShoppostSharing {
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
 					signup.signInTest(_email, _password, 0);
 					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
-					analyticsReporter.addProduct();
+					catalog.addProduct();
 					Thread.sleep(1000);
 					catalog.scrape(_td.getShareData().getProductURL());  //this should open the share modal
 					Thread.sleep(1000);
@@ -405,7 +405,7 @@ public class ShoppostSharing {
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
 					
-					_errorMsg = signupinPage.checkPWError();
+					_errorMsg = signupinPage.getRedAdvisory();
 					if(_errorMsg.equals("The Password field is required.")) {
 						System.out.println("PASS Correct error advisory: "+_errorMsg);
 					} else {

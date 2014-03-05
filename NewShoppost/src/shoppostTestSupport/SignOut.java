@@ -34,7 +34,6 @@ public class SignOut {
 	
 	
 	  public void logoutFromCat() throws Exception {
-		wait = new WebDriverWait(driver, 10);
 		catalog.openAcctMenu();
 	    
 	    catalog = PageFactory.initElements(driver, ProductCatalog.class);
@@ -44,7 +43,7 @@ public class SignOut {
 
 	    home = PageFactory.initElements(driver, Home.class);
 		
-		home.viaLogo();
+		//home.viaLogo();
 	    
 	  }
 }
