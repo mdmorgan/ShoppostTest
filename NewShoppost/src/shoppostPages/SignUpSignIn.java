@@ -24,7 +24,7 @@ public class SignUpSignIn {
 	@FindBy (id = "signIn")
 	private WebElement signInBtn;
 	
-	@FindBy(className = "checkbox")
+	@FindBy(xpath = "//div[@class='checkbox']/label")
 	private WebElement remember;
 	
 	@FindBy (id = "navSignUp")
@@ -33,12 +33,6 @@ public class SignUpSignIn {
 	@FindBy (id = "navSignIn")
 	private WebElement navSignInBtn;
 	
-	@FindBy (id = "termsOfUse")
-	private WebElement termsUse;
-	
-	@FindBy (id = "agreement")
-	private WebElement userAgree;
-
 	@FindBy (id = "emailValidation")
 	private WebElement emailMsg;
 	
@@ -99,13 +93,6 @@ public class SignUpSignIn {
 	}
 	public void rememberMe() {
 		remember.click();
-	}
-	public String getBadUsernameOrPW() {
-		String errorMsg = "";
-		if (redAdvisory.isDisplayed()) {
-			errorMsg = redAdvisory.getText();
-		}
-		return errorMsg;
 	}
 	
 	public void register(String email)  {

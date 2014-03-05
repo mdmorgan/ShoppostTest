@@ -49,6 +49,7 @@ import shoppostBeans.LPData;
 import shoppostBeans.TestData;
 import shoppostBeans.SauceLabData;
 
+import shoppostPages.AnalyticsReporter;
 import shoppostPages.ProductCatalog;
 import shoppostPages.SignUpSignIn;
 
@@ -86,6 +87,7 @@ public class ShoppostSignInEmail {
 	private SignUpSignIn signupinPage;
 	private UserAgreement userAgreementPage;
 	private ProductCatalog catalog;
+	private AnalyticsReporter analyticsReporter;
 	private String _errorMsg;
 	//private ScreenShot ss;
 	
@@ -141,6 +143,10 @@ public class ShoppostSignInEmail {
 		
 		signup = new SignUpIn(driver, _td);   //signup methods
 		SignOut logout = new SignOut(driver);
+		catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+		analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
+		signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
+
 		
 		_username = _td.getSignupinTests().getExistingUser();
 		_passkey = _td.getSignupinTests().getUserPW();
@@ -158,14 +164,13 @@ public class ShoppostSignInEmail {
   			
 					
 					
-				case "signinValid": 
+				case "signinValid": //without remember me
 					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
-					_freshUser = _username;  //make email with an existing username eg: test005@mark.com
-					_email = _freshUser;  //initialize '_freshUser'
+					_email = _username;  
 					_password = _passkey;
 					signup.signInTest(_email, _password, 0);
 					
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+					Thread.sleep(1500);
 					_emailAddress = catalog.getEmailAddress();
 					
 					if(_emailAddress.equals(_email)) {
@@ -174,12 +179,34 @@ public class ShoppostSignInEmail {
 						fail("Fail - bad email address: "+_emailAddress);
 					}
 					
-					Thread.sleep(2000);
-					logout.logoutFromCat();
+					Thread.sleep(500);
+					catalog.openAcctMenu();
+					catalog.signOut();
 					
 					break;
 					
-				case "signinBlankEmail": 	
+				case "signinValidRemember": //without remember me
+					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					_email = _username;  
+					_password = _passkey;
+					signup.signInTest(_email, _password, 1);  //1 = remember me
+					
+					Thread.sleep(1500);
+					_emailAddress = catalog.getEmailAddress();
+					
+					if(_emailAddress.equals(_email)) {
+						System.out.println("PASS Correct signin email: "+_email);
+					} else {
+						fail("Fail - bad email address: "+_emailAddress);
+					}
+					
+					Thread.sleep(500);
+					catalog.openAcctMenu();
+					catalog.signOut();
+					
+					break;
+					
+				case "signinBlankEmail": 	// fails, issue called out 3/5/14
 					
 					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
 					_password = _passkey;
@@ -196,7 +223,7 @@ public class ShoppostSignInEmail {
 					
 					break;
 					
-				case "signinEmailBlankPW": 	
+				case "signinEmailBlankPW": 	// fails, issue called out 3/5/14
 					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
 					_email = _username; 
 					
@@ -220,11 +247,10 @@ public class ShoppostSignInEmail {
 					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
 					_password = _passkey;
 					signup.signInTest("ii", _password, 0);
-					Thread.sleep(1000);
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject for errors
+					Thread.sleep(1500);
 					
 					_errorMsg = signupinPage.checkEmailError();
-					if(_errorMsg.equals("Must be a valid email address.")) {
+					if(_errorMsg.equals("Please enter a valid email address.")) {
 						System.out.println("PASS Correct error advisory: "+_errorMsg);
 					} else {
 						fail("FAIL - requires invalid email error advisory not: "+_errorMsg);
@@ -239,10 +265,9 @@ public class ShoppostSignInEmail {
 					_password = _passkey;
 					signup.signInTest(_email, _password, 0);
 					
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
-					Thread.sleep(1000);
-					_errorMsg = signupinPage.getBadUsernameOrPW();
-					if(_errorMsg.equals("Invalid username or password.")) {
+					Thread.sleep(1500);
+					_errorMsg = signupinPage.getRedAdvisory();
+					if(_errorMsg.equals("The email address or password is incorrect.")) {
 						System.out.println("PASS Correct error advisory: "+_errorMsg);
 					} else {
 						fail("FAIL - requires bad username or password advisory not: "+_errorMsg);
@@ -250,121 +275,6 @@ public class ShoppostSignInEmail {
 					
 					break;
 				
-				case "userAgreement": 
-					Window win = new Window(driver);
-					
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
-					r = rand.nextInt(10000);
-					_email = _username+r+"@sharklasers.com";  //make fake email with random number (a brand new user)_email = _username+r+".com";  //make fake email with random number
-					_password = _passkey+_passkey;
-					signup.gotoSignup();
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
-					
-					//signinPage.toAgreement();  
-					
-					userAgreementPage = PageFactory.initElements(driver, UserAgreement.class);
-					
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[@for='agreementCheckbox']")));
-					_currUrl = driver.getCurrentUrl();  //
-					
-					String mwh = driver.getWindowHandle();   //get current window name
-					driver.switchTo().window(win.changeWindow(By.xpath("//label[@for='agreementCheckbox']/p/a")));
-					
-					try {
-						
-						wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='container']")));  //wait for user agreement to show
-						assertEquals("Shoppost - End User License Agreement",driver.getTitle());
-						System.out.println("User Agreement confirmed.");
-					}
-					catch (TimeoutException e) {
-						System.out.println("NO Agreement Page!");
-					}
-					catch (ComparisonFailure ex) {
-						
-						System.out.println("Different Error Message Found");
-					}
-					finally { driver.close(); }
-					
-					//Thread.sleep(1000);
-					//driver.close(); //close agreement window
-					
-					driver.switchTo().window(mwh);  //go back to signup page
-					driver.get(_currUrl);
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
-				
-					break;
-				
-				case "forgotPassword": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl()+"sign-up");
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
-					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
-					Thread.sleep(500);
-					
-					try {
-						wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("loginBtn")));  //waiting for sign up page
-						driver.findElement(By.id("email_input"));
-						System.out.println("Member redirect confirmed.");
-					}
-					catch (TimeoutException e) {
-						System.out.println("ERROR! No Sign In Page!");
-					}
-					catch (ElementNotVisibleException ex) {
-						
-						System.out.println("ERROR! Email input not found");
-					}
-					finally {}
-					driver.get(_td.getSignupinTests().getBaseUrl()+"/sign-up"); 
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
-					//driver.close();
-					break;
-				
-				case "signUp": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl()+"sign-up");
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
-					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
-					Thread.sleep(500);
-					
-					try {
-						wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("loginBtn")));  //waiting for sign up page
-						driver.findElement(By.id("email_input"));
-						System.out.println("Member redirect confirmed.");
-					}
-					catch (TimeoutException e) {
-						System.out.println("ERROR! No Sign In Page!");
-					}
-					catch (ElementNotVisibleException ex) {
-						
-						System.out.println("ERROR! Email input not found");
-					}
-					finally {}
-					driver.get(_td.getSignupinTests().getBaseUrl()+"/sign-up"); 
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
-					//driver.close();
-					break;
-				
-				case "getHelp": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl()+"sign-up");
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
-					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
-					Thread.sleep(500);
-					
-					try {
-						wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("loginBtn")));  //waiting for sign up page
-						driver.findElement(By.id("email_input"));
-						System.out.println("Member redirect confirmed.");
-					}
-					catch (TimeoutException e) {
-						System.out.println("ERROR! No Sign In Page!");
-					}
-					catch (ElementNotVisibleException ex) {
-						
-						System.out.println("ERROR! Email input not found");
-					}
-					finally {}
-					driver.get(_td.getSignupinTests().getBaseUrl()+"/sign-up"); 
-					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
-					//driver.close();
-					break;
 				
 
 					

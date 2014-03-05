@@ -174,7 +174,7 @@ public class ShoppostLinks {
 					System.out.println(_email);
 					signup.signUpTest(_email, _password, 0);
 					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					Thread.sleep(1000);
+					Thread.sleep(1500);
 					_emailAddress = catalog.getEmailAddress();
 					if(_emailAddress.equals(_email)) {
 						System.out.println("PASS Correct signup email: "+_email);
@@ -256,6 +256,79 @@ public class ShoppostLinks {
 					//driver.close();
 					break;
 				
+				
+				case "forgotPassword": 
+					signup.helloPlatform(_td.getSignupinTests().getBaseUrl()+"sign-up");
+					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
+					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
+					Thread.sleep(500);
+					
+					try {
+						wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("loginBtn")));  //waiting for sign up page
+						driver.findElement(By.id("email_input"));
+						System.out.println("Member redirect confirmed.");
+					}
+					catch (TimeoutException e) {
+						System.out.println("ERROR! No Sign In Page!");
+					}
+					catch (ElementNotVisibleException ex) {
+						
+						System.out.println("ERROR! Email input not found");
+					}
+					finally {}
+					driver.get(_td.getSignupinTests().getBaseUrl()+"/sign-up"); 
+					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
+					//driver.close();
+					break;
+				
+				case "signUp": 
+					signup.helloPlatform(_td.getSignupinTests().getBaseUrl()+"sign-up");
+					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
+					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
+					Thread.sleep(500);
+					
+					try {
+						wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("loginBtn")));  //waiting for sign up page
+						driver.findElement(By.id("email_input"));
+						System.out.println("Member redirect confirmed.");
+					}
+					catch (TimeoutException e) {
+						System.out.println("ERROR! No Sign In Page!");
+					}
+					catch (ElementNotVisibleException ex) {
+						
+						System.out.println("ERROR! Email input not found");
+					}
+					finally {}
+					driver.get(_td.getSignupinTests().getBaseUrl()+"/sign-up"); 
+					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
+					//driver.close();
+					break;
+				
+				case "getHelp": 
+					signup.helloPlatform(_td.getSignupinTests().getBaseUrl()+"sign-up");
+					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
+					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
+					Thread.sleep(500);
+					
+					try {
+						wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("loginBtn")));  //waiting for sign up page
+						driver.findElement(By.id("email_input"));
+						System.out.println("Member redirect confirmed.");
+					}
+					catch (TimeoutException e) {
+						System.out.println("ERROR! No Sign In Page!");
+					}
+					catch (ElementNotVisibleException ex) {
+						
+						System.out.println("ERROR! Email input not found");
+					}
+					finally {}
+					driver.get(_td.getSignupinTests().getBaseUrl()+"/sign-up"); 
+					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
+					//driver.close();
+					break;
+
 					
 					
   				}

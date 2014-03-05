@@ -94,7 +94,16 @@ public class SignUpIn {
 			
 			gotoSignin();
 			Thread.sleep(1000);
-			signupinPage.signinNow(_email, _password);
+
+		    if (_aa == 1) { 
+		    	signupinPage.signinRemember(_email, _password);   // remember me checked
+			
+		    }else{
+			    signupinPage.signinNow(_email, _password);
+		    }
+
+			
+			
 			Thread.sleep(500);
 	  }
 	  

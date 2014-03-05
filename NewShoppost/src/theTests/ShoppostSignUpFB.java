@@ -306,8 +306,8 @@ public class ShoppostSignUpFB {
 					
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
 					Thread.sleep(1000);
-					_errorMsg = signupinPage.getBadUsernameOrPW();
-					if(_errorMsg.equals("Invalid username or password.")) {
+					_errorMsg = signupinPage.getRedAdvisory();
+					if(_errorMsg.equals("The email address or password is incorrect.")) {
 						System.out.println("PASS Correct error advisory: "+_errorMsg);
 					} else {
 						fail("FAIL - requires bad username or password advisory not: "+_errorMsg);
