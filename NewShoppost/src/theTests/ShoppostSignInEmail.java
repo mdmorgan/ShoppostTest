@@ -212,7 +212,6 @@ public class ShoppostSignInEmail {
 					_password = _passkey;
 					signup.signInTest("", _password, 0);
 					Thread.sleep(1000);
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject to include error messages
 					
 					_errorMsg = signupinPage.checkEmailError();
 					if(_errorMsg.equals("The Email address field is required.")) {
@@ -229,8 +228,6 @@ public class ShoppostSignInEmail {
 					
 					_password = _passkey;
 					signup.signInTest(_email, "", 0);
-					
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
 					
 					_errorMsg = signupinPage.getRedAdvisory();
 					if(_errorMsg.equals("The Password field is required.")) {

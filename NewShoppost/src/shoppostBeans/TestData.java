@@ -10,6 +10,7 @@ public class TestData {
 	private UITests uiTests;
 	private CatalogTests catalogTests;
 	private ShareData shareData;
+	private AnalyticsTests analyticsTests;
 	private NewUserShareTests newUserShareTests;
 	private LandingPageTests landingPageTests;
 	private OrdersTests ordersTests;
@@ -24,6 +25,7 @@ public class TestData {
 	public UITests getUITests() { return uiTests; }
 	public CatalogTests getCatalogTests() { return catalogTests; }
 	public ShareData getShareData() { return shareData; }
+	public AnalyticsTests getAnalyticsTests() { return analyticsTests; }
 	public NewUserShareTests getNewUserShareTests() { return newUserShareTests; }
 	public LandingPageTests getLandingPageTests() { return landingPageTests; }
 	public OrdersTests getOrdersTests() { return ordersTests; }

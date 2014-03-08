@@ -31,50 +31,60 @@ public class AnalyticsReporter {
 	private WebElement productsIcon;
 	
 	//socialReactions
-	@FindBy (id ="socialFacebookCount0")
+	@FindBy (xpath ="//li/strong[@id='dashboardSocialFacebookCount0']")
 	private WebElement fbViewCount;
-	@FindBy (id ="socialFacebookCount1")
+	@FindBy (xpath ="//li/strong[@id='dashboardSocialFacebookCount1']")
 	private WebElement fbShareCount;
-	@FindBy (id ="socialFacebookCount2")
+	@FindBy (xpath ="//li/strong[@id='dashboardSocialFacebookCount2']")
 	private WebElement fbLikeCount;
-	@FindBy (id ="socialTwitterCount0")
+	@FindBy (xpath ="//li/strong[@id='dashboardSocialTwitterCount0']")
 	private WebElement twitterViewCount;
-	@FindBy (id ="socialTwitterCount1")
+	@FindBy (xpath ="//li/strong[@id='dashboardSocialTwitterCount1']")
 	private WebElement twitterTweetCount;
-	@FindBy (id ="socialPinterestCount0")
+	@FindBy (xpath ="//li/strong[@id='dashboardSocialPinterestCount0']")
 	private WebElement pinterestViewCount;
-	@FindBy (id ="socialPinterestCount1")
+	@FindBy (xpath ="//li/strong[@id='dashboardSocialPinterestCount1']")
 	private WebElement pinterestPinCount;
-	@FindBy (id ="socialGooglePlusCount0")
+	@FindBy (xpath ="//li/strong[@id='dashboardSocialGoogleplusCount0']")
 	private WebElement googleViewCount;
-	@FindBy (id ="socialGooglePlusCount1")
+	@FindBy (xpath ="//li/strong[@id='dashboardSocialGoogleplusCount1']")
 	private WebElement googlePlus1Count;
-	@FindBy (id = "socialGooglePlusCount2")
+	@FindBy (xpath ="//li/strong[@id='dashboardSocialGoogleplusCount2']")
 	private WebElement googleShareCount;
 	
+	//geoLocations
+	@FindBy (id = "dashboardLocationName0")
+	private WebElement topGeoLocationName;
+	@FindBy (id = "dashboardLocationPercent0")
+	private WebElement topGeoLocationPercent;
+	@FindBy (id = "dashboardLocationName1")
+	private WebElement secondGeoLocationName;
+	@FindBy (id = "dashboardLocationPercent1")
+	private WebElement secondGeoLocationPercent;
+	
 	//referrals
-	@FindBy (id = "totalReferrals")
+	@FindBy (id = "dashboardTotalReferrals")
 	private WebElement allReferrals;
 	
-	@FindBy (xpath = "//tr[@class='facebook']/td[@id='referralPercent0']")
+	@FindBy (xpath = "//tr[@class='facebook']/td[@id='dashboardReferralPercent0']")
 	private WebElement referralsFBPercent;
-	@FindBy (xpath = "//tr[@class='facebook']/td[@id='referralValue0']")
+	@FindBy (xpath = "//tr[@class='facebook']/td[@id='dashboardReferralValue0']")
 	private WebElement referralsFBCount;
-	@FindBy (xpath = "//tr[@class='twitter']/td[@id='referralPercent1']")
+	@FindBy (xpath = "//tr[@class='twitter']/td[@id='dashboardReferralPercent1']")
 	private WebElement referralsTwitterPercent;
-	@FindBy (xpath = "//tr[@class='twitter']/td[@id='referralValue1']")
+	@FindBy (xpath = "//tr[@class='twitter']/td[@id='dashboardReferralValue1']")
 	private WebElement referralsTwitterCount;
-	@FindBy (xpath = "//tr[@class='pinterest']/td[@id='referralPercent2']")
+	@FindBy (xpath = "//tr[@class='pinterest']/td[@id='dashboardReferralPercent2']")
 	private WebElement referralsPinterestPercent;
-	@FindBy (xpath = "//tr[@class='pinterest']/td[@id='referralValue2']")
+	@FindBy (xpath = "//tr[@class='pinterest']/td[@id='dashboardReferralValue2']")
 	private WebElement referralsPinterestCount;
-	@FindBy (xpath = "//tr[@class='googleplus']/td[@id='referralPercent3']")
+	@FindBy (xpath = "//tr[@class='googleplus']/td[@id='dashboardReferralPercent3']")
 	private WebElement referralsGoogleplusPercent;
-	@FindBy (xpath = "//tr[@class='googleplus']/td[@id='referralValue3']")
+	@FindBy (xpath = "//tr[@class='googleplus']/td[@id='dashboardReferralValue3']")
 	private WebElement referralsGoogleplusCount;
-	@FindBy (xpath = "//tr[@class='other']/td[@id='referralPercent4']")
+	@FindBy (xpath = "//tr[@class='other']/td[@id='dashboardReferralPercent4']")
 	private WebElement referralsOtherPercent;
-	@FindBy (xpath = "//tr[@class='other']/td[@id='referralValue4']")
+	@FindBy (xpath = "//tr[@class='other']/td[@id='dashboardReferralValue4']")
 	private WebElement referralsOtherCount;
 	
 	//most shared single product drop menu
@@ -110,17 +120,17 @@ public class AnalyticsReporter {
 	//most referred single product drop menu
 	@FindBy (id = "mostReferralsDropDownButton")
 	private WebElement mostReferralsMenuBtn;
-	@FindBy (id = "mostreferralsDropDown0")
+	@FindBy (id = "mostReferralsDropDown0")
 	private WebElement mostAllReferralsMenu;
-	@FindBy (id = "mostreferralsDropDown1")
+	@FindBy (id = "mostReferralsDropDown1")
 	private WebElement mostFBReferralsMenu;
-	@FindBy (id = "mostreferralsDropDown2")
+	@FindBy (id = "mostReferralsDropDown2")
 	private WebElement mostTwitReferralsMenu;
-	@FindBy (id = "mostreferralsDropDown3")
+	@FindBy (id = "mostReferralsDropDown3")
 	private WebElement mostPinReferralsMenu;
-	@FindBy (id = "mostreferralsDropDown4")
+	@FindBy (id = "mostReferralsDropDown4")
 	private WebElement mostGoogReferralsMenu;
-	@FindBy (id = "mostreferralsDropDown5")
+	@FindBy (id = "mostReferralsDropDown5")
 	private WebElement mostOtherReferralsMenu;
 	
 	//most referred product
@@ -137,7 +147,7 @@ public class AnalyticsReporter {
 	@FindBy (id = "mostReferralsValue2")
 	private WebElement productValue3rdMostReferrals;
 	
-	@FindBy (id ="dateRangeButton")
+	@FindBy (id ="dateRange")
 	private WebElement dateRangeBtn;
 	@FindBy (id ="dateRange0")
 	private WebElement dateRange7;
@@ -197,6 +207,14 @@ public class AnalyticsReporter {
 		_socialData[9] = googleShareCount.getText();
 		return _socialData;
 	}
+	public String[] getGeoLocation() {
+		String _geoLocData[] = new String[4];
+		_geoLocData[0] = topGeoLocationName.getText();
+		_geoLocData[1] = topGeoLocationPercent.getText();
+		_geoLocData[2] = secondGeoLocationName.getText();
+		_geoLocData[3] = secondGeoLocationPercent.getText();
+		return _geoLocData;
+	}
 	
 	public String getReferralTotal() {
 		return allReferrals.getText();
@@ -227,8 +245,8 @@ public class AnalyticsReporter {
 	}
 	public String[] getOtherReferrals() {
 		String _otherReferralData[] = new String[2];
-		_otherReferralData[0] = referralsGoogleplusPercent.getText();
-		_otherReferralData[1] = referralsGoogleplusCount.getText();
+		_otherReferralData[0] = referralsOtherPercent.getText();
+		_otherReferralData[1] = referralsOtherCount.getText();
 		return _otherReferralData;
 	}
 	

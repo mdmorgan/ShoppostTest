@@ -42,6 +42,8 @@ public class AnalyticsDataMap {
 	  	
 	  	_hm.put("socialReactions", analyticsReporter.getSocialReactions());  //String[10]
 	  	
+	  	_hm.put("geoLocations", analyticsReporter.getGeoLocation()); //just top 2, String[4]
+	  	
 	  	_hm.put("referralTotal", analyticsReporter.getReferralTotal());  //String
 	  	_hm.put("facebookReferrals", analyticsReporter.getFBReferrals());  //String[2]
 	  	_hm.put("twitterReferrals", analyticsReporter.getTwitReferrals());  //String[2]
@@ -53,7 +55,7 @@ public class AnalyticsDataMap {
 	  	_hm.put("productMostFBSharesTop3", analyticsReporter.getMostSharesTop3("facebook"));  //String[6]
 	  	_hm.put("productMostTwitSharesTop3", analyticsReporter.getMostSharesTop3("twitter"));  //String[6]
 	  	_hm.put("productMostPinSharesTop3", analyticsReporter.getMostSharesTop3("pinterest"));  //String[6]
-	  	_hm.put("productMostGoogSharesTop3", analyticsReporter.getMostSharesTop3("googlPlus"));  //String[6]
+	  	_hm.put("productMostGoogSharesTop3", analyticsReporter.getMostSharesTop3("googlePlus"));  //String[6]
 	  	
 	  	_hm.put("productMostAllReferralsTop3", analyticsReporter.getMostReferralsTop3("allChannels"));  //String[6]
 	  	_hm.put("productMostFBReferralsTop3", analyticsReporter.getMostReferralsTop3("facebook"));  //String[6]

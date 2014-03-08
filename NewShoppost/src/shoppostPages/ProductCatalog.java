@@ -52,13 +52,13 @@ public class ProductCatalog {
 	private WebElement errorMsg;
 	
 	
-	@FindBy (xpath = "//button[contains(@id,'stats')]")  //accurate product count
+	@FindBy (xpath = "//a[contains(@id,'stats')]")  //accurate product count
 	private List<WebElement> productStatsButtons;
 	
-	@FindBy (xpath = "//button[contains(@id,'share')]")  //accurate product count
+	@FindBy (xpath = "//a[contains(@id,'share')]")  //accurate product count
 	private List<WebElement> productShareButtons;
 
-	@FindBy (xpath = "//button[contains(@id,'delete')]")  //note this will return an inflated product count, use stats or share size() for number
+	@FindBy (xpath = "//a[contains(@id,'delete')]")  //note this will return an inflated product count, use stats or share size() for number
 	private List<WebElement> productDeleteButtons;
 	
 	@FindBy (id = "confirmDelete")

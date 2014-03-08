@@ -102,7 +102,10 @@ public class ShoppostAnalytics {
 	private Window win;
 	private Set beforePopup;
 	private HashMap _adm;
-	private String[] _socialReactions;
+	private String _referralTotal, _referralTotal_b;
+	private String[] _socialReactions,_geoLocations, _fbReferrals,_twitReferrals,_pinReferrals,_googReferrals,_otherReferrals;
+	private String[] _socialReactions_b,_geoLocations_b,_fbReferrals_b,_twitReferrals_b,_pinReferrals_b,_googReferrals_b,_otherReferrals_b;
+	
 	//private ScreenShot ss;
 	
 	
@@ -165,30 +168,30 @@ public class ShoppostAnalytics {
 		SignOut logout = new SignOut(driver);
 		Window win = new Window(driver);
 		
-		_usernameFB = _td.getShareData().getUsernameFB();
+		_usernameFB = _td.getAnalyticsTests().getUsernameFB();
 		//System.out.println(_usernameFB);
 		//System.out.println("A");
-		_usernameTwitter = _td.getShareData().getUsernameTwitter();
-		_passkeyFB = _td.getShareData().getPasswordFB();
-		_username = _td.getShareData().getUsername();
-		_password = _td.getShareData().getPassword();
+		_passkeyFB = _td.getAnalyticsTests().getPasswordFB();
+		_username = _td.getAnalyticsTests().getUsername();
+		_password = _td.getAnalyticsTests().getPassword();
 		_freshUser = "";
 		
 		//System.out.println("testLength is: "+TestRunner.getTests().length);
-		for (int k=0; k<_td.getShareData().getTests().size(); k++) {  //taking one testCase parameter at a time (this by-passes the need for TestRunner
+		for (int k=0; k<_td.getAnalyticsTests().getTests().size(); k++) {  //taking one testCase parameter at a time (this by-passes the need for TestRunner
 		//for (int k=0; k<TestRunner.getTests().length; k++) {  //taking one testCase parameter at a time from cmd line
 	    //for (int k=0; k<1; k++) {   //just a quick test
 			//ss.takeTheShot(1, "platform");
   			//_testCase = TestRunner.getTests()[k];
-			_testCase = _td.getShareData().getTests().get(k);
+			_testCase = _td.getAnalyticsTests().getTests().get(k);
 			//_testCase = "signupValid";
   			switch (_testCase) {
   			
 					
 					
 				case "buildAnalyticsDataMap": // 
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
-					//signup.signInTest(_email, _password, 0);
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
+					signup.signInTest(_username, _password, 0);
+					Thread.sleep(1500);
 					//analyticsReporter.toCatalog();
 					
 					//_productCount = catalog.getProductCount();
@@ -199,9 +202,30 @@ public class ShoppostAnalytics {
 					
 					_adm = analyticsDataMap.buildMap("7"); //pass in the date range  7, 14, or 30
 					_socialReactions = (String[]) _adm.get("socialReactions");
+					_geoLocations = (String[]) _adm.get("geoLocations");
+					_referralTotal = (String) _adm.get("referralTotal");
+					_fbReferrals = (String[]) _adm.get("facebookReferrals");
+					_twitReferrals = (String[]) _adm.get("twitterReferrals");
+					_pinReferrals = (String[]) _adm.get("pinterestReferrals");
+					_googReferrals = (String[]) _adm.get("googlePlusReferrals");
+					_otherReferrals = (String[]) _adm.get("otherReferrals");
+					
+					String[] _productMostGoogShares3 = (String[]) _adm.get("productMostGoogSharesTop3");
+					String[] _productMostOtherRefers3 = (String[]) _adm.get("productMostOtherReferralsTop3");
 					System.out.println("FB view count: "+_socialReactions[0]);
 					System.out.println("FB share count: "+_socialReactions[1]);
 					System.out.println("FB Like count: "+_socialReactions[2]);
+					System.out.println("Twit view count: "+_socialReactions[3]);
+					System.out.println("Twit tweet count: "+_socialReactions[4]);
+					System.out.println("Pin view count: "+_socialReactions[5]);
+					System.out.println("Pin Pin count: "+_socialReactions[6]);
+					System.out.println("total Referrals: "+_referralTotal);
+					System.out.println("other referrals %: "+_otherReferrals[0]);
+					System.out.println("other referrals redirects: "+_otherReferrals[1]);
+					System.out.println("product 3rd most shared google: "+_productMostGoogShares3[4]);
+					System.out.println("product 3rd most shared google ct: "+_productMostGoogShares3[5]);
+					System.out.println("product 3rd most referred other: "+_productMostOtherRefers3[4]);
+					System.out.println("product 3rd most referred other ct: "+_productMostOtherRefers3[5]);
 					//String [][] optionValues = (String[][]) _hm.get("_optionValues");
 					
 					/**System.out.println("name = "+shareModal.getProductName());
@@ -219,7 +243,7 @@ public class ShoppostAnalytics {
 					break;
 					
 				case "confirmTwitterShare": // twitter shares
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					//signup.signInTest(_email, _password, 0);
 					analyticsReporter.toCatalog();
 					
@@ -236,7 +260,6 @@ public class ShoppostAnalytics {
 					driver.switchTo().window(win.changeWindowForShare(beforePopup));  //this clicks the link and switches windows because win.changeWindowForShare() returns a URL to switch to
 					
 					_initialTweet = shareSetUp.getTweet();
-					shareSetUp.addMoreTweet(_td.getShareData().getMoreTweet());
 					shareSetUp.loginTweetTwitter(_usernameTwitter, _passkeyFB);
 					//driver.close(); //closes current window - maybe	
 
@@ -261,7 +284,7 @@ public class ShoppostAnalytics {
 					
 				case "confirmPinterestShare": // see error message
 					
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					//signup.signInTest(_email, _password, 0);
 					analyticsReporter.toCatalog();
 					
@@ -306,7 +329,7 @@ public class ShoppostAnalytics {
 				
 				case "confirmGooglePlusShare": // see error message
 					
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					//signup.signInTest(_email, _password, 0);
 					
 					analyticsReporter.toCatalog();
@@ -323,10 +346,10 @@ public class ShoppostAnalytics {
 					shareModal.shareGooglePlus();   //this opens a new tab for googlePlus sharing now need to switch driver to that new window
 					driver.switchTo().window(win.changeWindowForShare(beforePopup));  //this clicks the link and switches windows because win.changeWindowForShare() returns a URL to switch to
 					
-					shareSetUp.signinGoogplus(_usernameFB, _td.getShareData().getPasswordGoog());
+					//shareSetUp.signinGoogplus(_usernameFB, _td.getAnalyticsTests().getPasswordGoog());
 					Thread.sleep(8000);
 					_googTitle = shareSetUp.getGoogTitle();
-					shareSetUp.shareToGoog(_td.getShareData().getGoogComment());  //
+					//shareSetUp.shareToGoog(_td.getAnalyticsTests().getGoogComment());  //
 					//driver.close(); //closes current window - maybe	
 
 					driver.switchTo().window(_mwh);  //back to modal
@@ -352,7 +375,7 @@ public class ShoppostAnalytics {
 
 
 				case "shareModalTest": //Opens share modal window for random product
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					Actions move2 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -371,13 +394,13 @@ public class ShoppostAnalytics {
 					
 				case "addProductViaDashboard": 	
 					
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
 					signup.signInTest(_email, _password, 0);
 					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
 					catalog.addProduct();
 					Thread.sleep(1000);
-					catalog.scrape(_td.getShareData().getProductURL());  //this should open the share modal
+					catalog.scrape(_td.getAnalyticsTests().getProductURL());  //this should open the share modal
 					Thread.sleep(1000);
 					catalog.closeAdd();
 					
@@ -387,7 +410,7 @@ public class ShoppostAnalytics {
 					break;
 					
 				case "productDisplay": 	
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
 					signup.signInTest(_email, _password, 0);
 					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
@@ -395,7 +418,7 @@ public class ShoppostAnalytics {
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					catalog.addProduct();
 					Thread.sleep(1000);
-					catalog.scrape(_td.getShareData().getProductURL());  //bad URL
+					catalog.scrape(_td.getAnalyticsTests().getProductURL());  //bad URL
 					Thread.sleep(1000);
 					catalog.closeAdd();
 					
@@ -414,7 +437,7 @@ public class ShoppostAnalytics {
 					
 					
 				case "noProductDisplay": 
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
 					//signup.signInTest(_email, _password, 0);
 					//analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
@@ -437,7 +460,7 @@ public class ShoppostAnalytics {
 					break;
 				
 				case "deleteProductViaHover": 
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					Actions move3 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -452,7 +475,7 @@ public class ShoppostAnalytics {
 
 				
 				case "deleteProductViaModalShare": 
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					Actions move4 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -469,7 +492,7 @@ public class ShoppostAnalytics {
 
 				
 				case "deleteProductViaModalStats": 
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					Actions move5 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -488,7 +511,7 @@ public class ShoppostAnalytics {
 
 				
 				case "cancelDeleteProduct": 
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					Actions move6 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -508,7 +531,7 @@ public class ShoppostAnalytics {
 
 				
 				case "viewRandomStats": //View random product Stats from product hover
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					Actions movea = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -524,7 +547,7 @@ public class ShoppostAnalytics {
 					break;
 					
 				case "viewRandomStatsViaShare": //View random product Stats from share Modal
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					Actions move7 = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
@@ -541,7 +564,7 @@ public class ShoppostAnalytics {
 					break;
 
 				case "viewSingleStatsViaDashMS": //View product Stats from Dashboard most shared
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
 					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
@@ -555,7 +578,7 @@ public class ShoppostAnalytics {
 					break;
 
 				case "viewSingleStatsViaDashMR": //View product Stats from Dashboard most referred
-					signup.helloPlatform(_td.getShareData().getBaseUrl());
+					signup.helloPlatform(_td.getAnalyticsTests().getBaseUrl());
 					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
 					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
 					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
