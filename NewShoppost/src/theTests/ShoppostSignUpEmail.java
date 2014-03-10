@@ -174,7 +174,7 @@ public class ShoppostSignUpEmail {
 					System.out.println(_email);
 					signup.signUpTest(_email, _password, 0);
 					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					Thread.sleep(1500);
+					Thread.sleep(2000);
 					_emailAddress = catalog.getEmailAddress();
 					if(_emailAddress.equals(_email)) {
 						System.out.println("PASS Correct signup email: "+_email);

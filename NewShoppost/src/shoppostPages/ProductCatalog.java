@@ -4,11 +4,17 @@ import java.util.List;
 import java.util.Random;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.WebElement;
 
 public class ProductCatalog {
+	private int DRIVER_WAIT = 15;
+	
 	private int _index;
 	Random rand = new Random();
 	
@@ -68,6 +74,10 @@ public class ProductCatalog {
 	private List<WebElement> thumbnails;
 	
 
+	public ProductCatalog (WebDriver driver) {
+		ElementLocatorFactory finder = new AjaxElementLocatorFactory(driver, DRIVER_WAIT);
+		PageFactory.initElements(finder, this);
+	}
 	
 	
 	
@@ -90,14 +100,14 @@ public class ProductCatalog {
 		//System.out.println("number of products: "+productStatsButtons.size());
 		return productStatsButtons.size();
 	}
-	public WebElement hoverRandomProduct() {
+	public WebElement hoverRandomProduct() {   //this hovers a random product to activate buttons
 		_index = rand.nextInt(productStatsButtons.size()-1);
 		return thumbnails.get(_index);
 	}
 	public WebElement hoverProductAgain() {
 		return thumbnails.get(_index);
 	}
-	public void getShare() {
+	public void getShare() {  //this opens share modal of the random product
 		productShareButtons.get(_index).click();
 	}
 	public void getRandomStats() {

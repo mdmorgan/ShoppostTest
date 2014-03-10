@@ -2,9 +2,14 @@ package shoppostPages;
 
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class ShareSetUp {
+	private int DRIVER_WAIT = 15;
 
 	@FindBy(id = "u_0_4")
 	private WebElement shareMessage;
@@ -80,6 +85,12 @@ public class ShareSetUp {
 	
 	@FindBy(xpath = "//td[@class='bI']/div[contains(@class,'d-k-l')]")
 	private WebElement shareGoogBtn;
+	
+	public ShareSetUp (WebDriver driver) {
+		ElementLocatorFactory finder = new AjaxElementLocatorFactory(driver, DRIVER_WAIT);
+		PageFactory.initElements(finder, this);
+	}
+
 	
 
 	public void loginFacebook(String fbUsername, String fbPass) {

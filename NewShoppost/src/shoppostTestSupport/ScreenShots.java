@@ -53,18 +53,18 @@ public class ScreenShots {
 	  _test = test;
 	  _setup = setup;
 	  	
-		if (("sauceLabsRemote1").equals(_browserName)||("sauceLabsRemote2").equals(_browserName)||("sauceLabsRemote3").equals(_browserName)||("sauceLabsRemote4").equals(_browserName)) {
+		if (("sauceLabsRemote1").equals(_browserName)||("sauceLabsRemote2").equals(_browserName)||("sauceLabsRemote3").equals(_browserName)||("sauceLabsRemote4").equals(_browserName)) {//if using sauceLabs, start augmented driver
 			WebDriver augmentedDriver = new Augmenter().augment(_driver);
-			if (("landingPage").equals(_test)) {
+			if (("landingPage").equals(_test)) {  //if test is a landing page, get screenshot and save with this name
 				File screenshot = ((TakesScreenshot)augmentedDriver).getScreenshotAs(OutputType.FILE);
 				FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\lp_"+_sld.getlpName()+_sld.getSauceBrowser().get(m).getBOS()+_setup+_c+".png"));
-			} else {
+			} else {  //if not landing page, get screenshot and save this way
 				File screenshot = ((TakesScreenshot)augmentedDriver).getScreenshotAs(OutputType.FILE);
 				FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\platform_"+_sld.getSauceBrowser().get(m).getBOS()+_setup+_c+".png"));
 			}
 			System.out.println("screen shot taken from sauce");
 			
-		}else {
+		}else {  //if not saucelabs
 			if (("landingPage").equals(_test)) {
 			File screenshot = ((TakesScreenshot)_driver).getScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\lp_"+_lpd.getlpName()+_browserName+_setup+_c+".png"));

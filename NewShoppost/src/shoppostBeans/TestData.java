@@ -7,7 +7,7 @@ public class TestData {
 	private AcctSetTests acctSetTests;
 	private SignupinTests signupinTests;
 	private SignupinFBTests signupinFBTests;
-	private UITests uiTests;
+	private UIData uiData;
 	private CatalogTests catalogTests;
 	private ShareData shareData;
 	private AnalyticsTests analyticsTests;
@@ -22,7 +22,7 @@ public class TestData {
 	public AcctSetTests getAcctSetTests() { return acctSetTests; }
 	public SignupinTests getSignupinTests() { return signupinTests; }
 	public SignupinFBTests getSignupinFBTests() { return signupinFBTests; }
-	public UITests getUITests() { return uiTests; }
+	public UIData getUIData() { return uiData; }
 	public CatalogTests getCatalogTests() { return catalogTests; }
 	public ShareData getShareData() { return shareData; }
 	public AnalyticsTests getAnalyticsTests() { return analyticsTests; }
