@@ -7,7 +7,7 @@ import org.junit.runner.notification.Failure;
 public class TestRunner {
 	
 	//private static String[] defaultTest = { "signupValid", "signupNoPW", "signupShortPW", "signupMismatchPW" };
-	private static String[] defaultTest = { "signupValid" };
+	private static String[] defaultTest = { "home" };
 	private static String[] tests;
 	
 	
@@ -20,7 +20,8 @@ public class TestRunner {
 	//System.out.println("start...");
 		tests = args.length > 0 ? args : defaultTest;  //this reads the command-line arguments and stores them in tests, if no args then it uses defaultTest
 		
-		Result result = JUnitCore.runClasses(ShoppostSignUpEmail.class);
+		//Result result = JUnitCore.runClasses(ShoppostSignUpEmail.class);
+		Result result = JUnitCore.runClasses(ShoppostUI.class);
 		//Result result = JUnitCore.runClasses(ShoppostSignUpEmail.class, ShoppostSignInEmail.class);
 		for (Failure failure : result.getFailures()) {
 			System.out.println(failure.toString());

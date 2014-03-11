@@ -13,6 +13,7 @@ public class SignupinTests {
 	private String existingUser;
 	private String halfPassword;
 	private String userPW;
+	private String tcFolder;
 	private List<String> tests;
 	
 	
@@ -23,6 +24,7 @@ public class SignupinTests {
 	public String getExistingUser() { return existingUser; }
 	public String getHalfPassword() { return halfPassword; }
 	public String getUserPW() { return userPW; }
+	public String getTcFolder() { return tcFolder; }
 	public List<String> getTests() { return tests; }
 	
 	

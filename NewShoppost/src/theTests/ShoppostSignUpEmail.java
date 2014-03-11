@@ -87,7 +87,7 @@ public class ShoppostSignUpEmail {
 	private ProductCatalog catalog;
 	private AnalyticsReporter analyticsReporter;
 	private UserAgreement userAgreementPage;
-	private String _errorMsg;
+	private String _errorMsg, _testPlatform, _folderTestCase;
 	//private ScreenShot ss;
 	
 	
@@ -123,6 +123,7 @@ public class ShoppostSignUpEmail {
 		
 		GetDrivers getDriver = new GetDrivers(this.browser);   //instantiate GetDriver
 		driver = getDriver.set();
+		_testPlatform = getDriver.getPlatform();  //gets platform (must match qmetry platform in test cases)
 		
 		return;
 		
@@ -159,6 +160,7 @@ public class ShoppostSignUpEmail {
 			//ss.takeTheShot(1, "platform");
   			//_testCase = TestRunner.getTests()[k];
 			_testCase = _td.getSignupinTests().getTests().get(k);
+			_folderTestCase = _td.getSignupinTests().getTcFolder()+_testCase;
 			//_testCase = "signupValid";
   			System.out.println(_testCase);
   			switch (_testCase) {
@@ -306,7 +308,7 @@ public class ShoppostSignUpEmail {
 		}
 		
 		Thread.sleep(1000);
-		ss.takeTheShot(2, "platform", _testCase);  //screenshot of outro
+		//ss.takeTheShot(i, "platform", _platform, _folderTestCase);  //_platform = Qmetry platform, _folderTestCase = Qfolder+Qtestcase
 		Thread.sleep(1000);  
 		
 	}

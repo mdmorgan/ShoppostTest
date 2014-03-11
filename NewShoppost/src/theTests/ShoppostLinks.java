@@ -87,7 +87,7 @@ public class ShoppostLinks {
 	private ProductCatalog catalog;
 	private AnalyticsReporter analyticsReporter;
 	private UserAgreement userAgreementPage;
-	private String _errorMsg;
+	private String _errorMsg,  _testPlatform, _folderTestCase;
 	//private ScreenShot ss;
 	
 	
@@ -123,6 +123,7 @@ public class ShoppostLinks {
 		
 		GetDrivers getDriver = new GetDrivers(this.browser);   //instantiate GetDriver
 		driver = getDriver.set();
+		_testPlatform = getDriver.getPlatform();  //gets platform (must match qmetry platform in test cases)
 		
 		return;
 		
@@ -159,8 +160,8 @@ public class ShoppostLinks {
 			//ss.takeTheShot(1, "platform");
   			//_testCase = TestRunner.getTests()[k];
 			_testCase = _td.getSignupinTests().getTests().get(k);
-			//_testCase = "signupValid";
-  			System.out.println(_testCase);
+			_folderTestCase = _td.getSignupinTests().getTcFolder()+_testCase;
+			System.out.println(_testCase);
   			switch (_testCase) {
   			
 				case "signupValid": //loads home page then redirects to signup page
@@ -335,7 +336,7 @@ public class ShoppostLinks {
 		}
 		
 		Thread.sleep(1000);
-		ss.takeTheShot(2, "platform", _testCase);  //screenshot of outro
+		//ss.takeTheShot(i, "platform", _platform, _folderTestCase); //screenshot of outro
 		Thread.sleep(1000);  
 		
 	}

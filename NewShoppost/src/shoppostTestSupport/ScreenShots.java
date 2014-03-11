@@ -33,7 +33,7 @@ public class ScreenShots {
   private static TestData _td;
   private static SauceLabData _sld;
   private static LPData _lpd;
-  private String _browserName, _test, _setup;
+  private String _browserName, _test, _setup, _platform;
   private int j,m,n;
   
   
@@ -48,10 +48,12 @@ public class ScreenShots {
 	} 
 
  
-  public void takeTheShot(int c, String test, String setup) throws Exception {
-	  int _c = c;
+  public void takeTheShot(int c, String test, String tcPlatform, String testCase) throws Exception {
+	  int _c = c+1;
 	  _test = test;
-	  _setup = setup;
+	  _setup = testCase;
+	  _platform = tcPlatform;
+	  
 	  	
 		if (("sauceLabsRemote1").equals(_browserName)||("sauceLabsRemote2").equals(_browserName)||("sauceLabsRemote3").equals(_browserName)||("sauceLabsRemote4").equals(_browserName)) {//if using sauceLabs, start augmented driver
 			WebDriver augmentedDriver = new Augmenter().augment(_driver);
@@ -60,18 +62,18 @@ public class ScreenShots {
 				FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\lp_"+_sld.getlpName()+_sld.getSauceBrowser().get(m).getBOS()+_setup+_c+".png"));
 			} else {  //if not landing page, get screenshot and save this way
 				File screenshot = ((TakesScreenshot)augmentedDriver).getScreenshotAs(OutputType.FILE);
-				FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\platform_"+_sld.getSauceBrowser().get(m).getBOS()+_setup+_c+".png"));
+				FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\"+_sld.getSauceBrowser().get(m).getBOS()+_setup+_c+".png"));
 			}
 			System.out.println("screen shot taken from sauce");
 			
 		}else {  //if not saucelabs
 			if (("landingPage").equals(_test)) {
 			File screenshot = ((TakesScreenshot)_driver).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\lp_"+_lpd.getlpName()+_browserName+_setup+_c+".png"));
+			FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\lp_"+_lpd.getlpName()+_platform+_setup+_c+".png"));
 			
 			}else if (("platform").equals(_test)) {
 				File screenshot = ((TakesScreenshot)_driver).getScreenshotAs(OutputType.FILE);
-				FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\platform_"+_browserName+_setup+_c+".png"));
+				FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\"+_platform+"_"+_setup+"_"+_c+".png"));
 			}
 		}
 	  return ;

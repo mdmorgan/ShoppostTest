@@ -99,9 +99,30 @@ public class GetDrivers {
 		
 		return driver;
 
+	}
+	public String getPlatform() throws Exception {
+		String _platform="";	
+		switch(_browser) {
+		case "*firefox":
+			_platform = "Win7FF26";
+			break;
+			
+		case "*safari":
+			_platform = "Win7Safari5";
+			break;
+			
+		case "*internetexplorer":
+			_platform = "Win7IE9";
+			break;
+			
+		case "*chrome":
+			_platform = "Win7Chrome33";
+			break;
+			
+		}
 		
 		
-		
+		return _platform;
 	}
 
 }

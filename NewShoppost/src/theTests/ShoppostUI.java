@@ -98,7 +98,7 @@ public class ShoppostUI {
 	private ShareModal shareModal;
 	private ShareSetUp shareSetUp;
 	private Home home;
-	private String _errorMsg;
+	private String _errorMsg, _testPlatform, _folderTestCase;
 	private Window win;
 	private Set beforePopup;
 	private ScreenShots ss;
@@ -135,7 +135,8 @@ public class ShoppostUI {
 		System.out.println("counter is: "+counter);
 		
 		GetDrivers getDriver = new GetDrivers(this.browser);   //instantiate GetDriver
-		driver = getDriver.set();
+		driver = getDriver.set();   // gets needed browser driver
+		_testPlatform = getDriver.getPlatform();  //gets platform (must match qmetry platform in test cases)
 		
 		return;
 		
@@ -143,12 +144,13 @@ public class ShoppostUI {
 	
 	@Test
 	  public void test_platformUI() throws Exception {
-		wait = new WebDriverWait(driver, 10);
+		//wait = new WebDriverWait(driver, 10);
 		signupinPage = new SignUpSignIn(driver);  //this waits for page to load AND initializes the pageFactory proxies
 		analyticsReporter = new AnalyticsReporter(driver); 
 		catalog = new ProductCatalog(driver);
 		shareModal = new ShareModal(driver);
 		shareSetUp = new ShareSetUp(driver);
+		home = new Home(driver);
 		Random rand = new Random();
 		Actions move = new Actions(driver);
 		//signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
@@ -156,7 +158,7 @@ public class ShoppostUI {
 		//shareSetUp = PageFactory.initElements(driver, ShareSetUp.class);
 		//analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
 		//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-		home = PageFactory.initElements(driver, Home.class);  //instantiate the pageOject 
+		//home = PageFactory.initElements(driver, Home.class);  //instantiate the pageOject 
 
 		ReadTestJSON.read();
 		_td = ReadTestJSON.get_td();
@@ -173,44 +175,54 @@ public class ShoppostUI {
 		_password = _td.getUIData().getUserPW();
 		_freshUser = "";
 		
+		
 		//System.out.println("testLength is: "+TestRunner.getTests().length);
-		for (int k=0; k<_td.getUIData().getTests().size(); k++) {  //taking one testCase parameter at a time (this by-passes the need for TestRunner
-		//for (int k=0; k<TestRunner.getTests().length; k++) {  //taking one testCase parameter at a time from cmd line
+		//for (int k=0; k<_td.getUIData().getTests().size(); k++) {  //taking one testCase parameter at a time (this by-passes the need for TestRunner
+		for (int k=0; k<TestRunner.getTests().length; k++) {  //taking one testCase parameter at a time from cmd line
 	    //for (int k=0; k<1; k++) {   //just a quick test
-			//ss.takeTheShot(1, "platform");
-  			//_testCase = TestRunner.getTests()[k];
-			_testCase = _td.getUIData().getTests().get(k);
-			//_testCase = "signupValid";
-  			switch (_testCase) {
+			
+			_testCase = TestRunner.getTests()[k];
+			//_testCase = _td.getUIData().getTests().get(k);
+			_folderTestCase = _td.getUIData().getTcFolder()+_testCase;
+			switch (_testCase) {
   			
 					
 					
 				case "home": // FB shares
 					signup.helloPlatform(_td.getUIData().getBaseUrl());
-					browsWidths(_testCase); // takes screenshots with varying browser widths
+					browsWidths(_testPlatform, _folderTestCase); // takes screenshots with varying browser widths
 					Thread.sleep(1000);
 					
 					//logout.logoutFromCat();
 					
 					break;
 					
-				case "signUpIn": //
+				case "signUp": //
 					signup.helloPlatform(_td.getUIData().getBaseUrl());
 					home.toSignup();  //open sign up page
-					browsWidths(_testCase+"up"); // takes screenshots with varying browser widths
-					home.toSignin();  // open sign in page
-					browsWidths(_testCase+"in"); // takes screenshots with varying browser widths
+					browsWidths(_testPlatform, _folderTestCase); // takes screenshots with varying browser widths
 					
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
 					
 					break;
+					
+				case "signIn": //
+					signup.helloPlatform(_td.getUIData().getBaseUrl());
+					home.toSignin();  // open sign in page
+					browsWidths(_testPlatform, _folderTestCase); // takes screenshots with varying browser widths
+					
+					Thread.sleep(1000);
+					//logout.logoutFromCat();
+					
+					break;
+
 					
 				case "dashboard": // 
 					
 					signup.helloPlatform(_td.getUIData().getBaseUrl());
 					signup.signInTest(_username, _password, 0);
-					browsWidths(_testCase);
+					browsWidths(_testPlatform, _folderTestCase);
 					
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
@@ -222,7 +234,7 @@ public class ShoppostUI {
 					signup.helloPlatform(_td.getUIData().getBaseUrl());
 					signup.signInTest(_username, _password, 0);
 					analyticsReporter.toCatalog();
-					browsWidths(_testCase);
+					browsWidths(_testPlatform, _folderTestCase);
 					
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
@@ -237,7 +249,7 @@ public class ShoppostUI {
 					_productCount = catalog.getProductCount();
 					move.moveToElement(catalog.hoverRandomProduct());
 					catalog.getShare();
-					browsWidths(_testCase);
+					browsWidths(_testPlatform, _folderTestCase);
 					
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
@@ -250,7 +262,7 @@ public class ShoppostUI {
 					signup.helloPlatform(_td.getUIData().getBaseUrl());
 					home.toSignin();  // open sign in page
 					signupinPage.toForgetful();
-					browsWidths(_testCase+"in"); // takes screenshots with varying browser widths
+					browsWidths(_testPlatform, _folderTestCase); // takes screenshots with varying browser widths
 					
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
@@ -265,7 +277,7 @@ public class ShoppostUI {
 					catalog.openAcctMenu();
 					catalog.toAcctSet();
 					
-					browsWidths(_testCase);
+					browsWidths(_testPlatform, _folderTestCase);
 					
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
@@ -281,7 +293,7 @@ public class ShoppostUI {
 					catalog.openAcctMenu();
 					catalog.toAcctSet();
 					
-					browsWidths(_testCase);
+					browsWidths(_testPlatform, _folderTestCase);
 					
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
@@ -298,10 +310,11 @@ public class ShoppostUI {
 		Thread.sleep(1000);  
 		
 	}
-	public void browsWidths(String testCase) throws Exception {
+	public void browsWidths(String platform, String foldertestCase) throws Exception {
 		ScreenShots ss = new ScreenShots(driver, _td, _sld, _ltd, _browsName, m);
 		int i;
-		String _case = testCase;
+		String _foldercase = foldertestCase;
+		String _platform = platform;
 		
 		for (i=0; i<_td.getUIData().getWidths().size(); i++) {
 			driver.manage().window().setPosition(new Point(0,0));
@@ -310,13 +323,13 @@ public class ShoppostUI {
 			driver.manage().window().setSize(dim);
 			Thread.sleep(1000);
 			
-			ss.takeTheShot(i, "platform", _case);  // ss.takeTheShot(2, "platform", _testCase); 
+			ss.takeTheShot(i, "platform", _platform, _foldercase);  // ss.takeTheShot(2, "platform", _testCase); 
 			if (_browsName.equals("sauceLabsRemote1")) { break; }
 		}
 		
 		driver.manage().window().maximize();
 		Thread.sleep(1000);
-		ss.takeTheShot(i, "platform", _case);
+		ss.takeTheShot(i, "platform", _platform, _foldercase);
 		
 		
 	}
