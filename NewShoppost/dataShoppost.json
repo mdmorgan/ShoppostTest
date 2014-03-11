@@ -1,0 +1,196 @@
+{
+	"acctSetTests":
+	  {
+	    "testsPossibles":[ "generateNewUser", "acctMenuFunction", "homeRedirect", "busProfile", "storeDetails", "amazon", "paypal", "subscription", "notifications", "changePW" ],
+		"acctTestCase2":[  "signIn", "generateNewUser", "acctMenuFunction", "homeRedirect", "busProfile", "storeDetails", "amazon", "paypal", "subscription", "notifications" ],
+		"tests":[  "signIn", "storeDetails" ],
+		"username":"iii98999",
+		"userPW":"DishDish",
+		"baseUrl":"http://staging.shoppost.in/",
+		"widths": [320, 600, 900 ]
+		
+	  },
+	"signupinTests":
+	  {
+	    "baseUrl":"http://localhost:9000/home",
+		"username":"test",
+		"existingUser":"test001@mark.com",
+		"halfPassword":"Dish",
+		"userPW":"DishDish",
+		"tcFolder":"",
+		"testsPossibles":[ "signupValid", "alreadyExist", "signupBlankEmail", "signupInvalidEmail", "signupNoPW", "signupShortPW", "signupMismatchPW", "userAgreement", "alreadyMemberBtn", "signinValid", "signinValidRemember", "signinBlankEmail", "signinEmailBlankPW", "signinInvalidEmail", "signinBadUsernameBadPW" ],
+		"tests":[  "signupValid" ],
+		"widths": [320, 600, 900 ]
+		
+	  },
+	  
+	"signupinFBTests":
+	  {
+		"baseUrl":"http://localhost:9000/products",
+		"usernameFB":"mark.morgan@zantler.com",
+		"passwordFB":"moreaboutMoosh",
+		"testsPossibles":[ "signupValid", "alreadyExist", "signupBlankEmail", "signupInvalidEmail", "signupNoPW", "signupShortPW", "signupMismatchPW", "signupNoTandC", "userAgreement", "alreadyMemberBtn", "signinValid", "signinBlankEmail", "signinEmailBlankPW", "signinInvalidEmail", "signinBadUsernameBadPW", "forgotPassword", "signUp", "getHelp" ],
+		"tests":[   "shareModalTest" ],
+		"widths": [320, 600, 900 ]
+		
+	  },
+	  
+	"catalogTests":
+	  {
+		"baseUrl":"http://localhost:9000/home",
+		"productURL":"http://schminky.schmink.com",
+		"usernameFB":"mark.morgan@zantler.com",
+		"passwordFB":"moreaboutMoosh",
+		"username":"test001@mark.com",
+		"password":"DishDish",
+		"testsPossibles":[ "addProductValidURL", "addProductInvalidURL", "addProductCancelShare", "shareModalTest", "addProductViaDashboard", "productDisplay", "noProductDisplay", "deleteProductViaHover", "deleteProductViaModalShare", "deleteProductViaModalStats", "cancelDeleteProduct","viewRandomStats","viewRandomStatsViaShare", "viewSingleStatsViaDashMS", "viewSingleStatsViaDashMR" ],
+		"tests":[   "addProductValidURL" ],
+		"widths": [320, 600, 900 ],
+		"below the numbers indicate which search parameters to use":"so [ 0, 2 ] means using 'one' and 'three' ",
+		"searchWith": [ 0 ],
+		"search": [ "one", "two", "three", "four", "photo", "pump", "tang", "now", "Pictures", "Target", "Liminal", "beautiful" ],
+		"expectResult": [ 1 ],
+		"productTitle": [ "Zat Best Test", "Photos From The Liminal", "Pictures i found", "My Best Test" ],
+		"productTags": [ "photo, one", "pumpkin, halloween, two", "three, photo, remember, tangerine, glamour", "Look up, now, four" ],
+		"comment":"remember the arrays are zero-indexed"
+
+		
+	  },
+	  
+	"shareData":
+	  {
+		"baseUrl":"http://localhost:9000/home",
+		"productURL":"http://schminky.schmink.com",
+		"usernameFB":"mark.morgan@zantler.com",
+		"passwordFB":"moreaboutMoosh",
+		"usernameTwitter":"MooshGaloosh",
+		"passwordGoog":"F15hZ00mG33",
+		"googComment":"from the world of test automation",
+		"username":"test001@mark.com",
+		"password":"DishDish",
+		"testsPossibles":[ "confirmFBShare", "confirmTwitterShare", "confirmPinterestShare", "confirmGooglePlusShare" ],
+		"tests":[   "confirmPinterestShare" ],
+		"shareMessage":"Greetings from Shoppost Auto-Test",
+		"moreTweet":"Another sweet tweet",
+		"widths": [320, 600, 900 ],
+		"below the numbers indicate which search parameters to use":"so [ 0, 2 ] means using 'one' and 'three' ",
+		"searchWith": [ 0 ],
+		"search": [ "one", "two", "three", "four", "photo", "pump", "tang", "now", "Pictures", "Target", "Liminal", "beautiful" ],
+		"expectResult": [ 1 ],
+		"productTitle": [ "Zat Best Test", "Photos From The Liminal", "Pictures i found", "My Best Test" ],
+		"productTags": [ "photo, one", "pumpkin, halloween, two", "three, photo, remember, tangerine, glamour", "Look up, now, four" ],
+		"comment":"remember the arrays are zero-indexed"
+
+		
+	  },
+
+	"analyticsTests":
+	  {
+		"baseUrl":"http://localhost:9000/home",
+		"baseUrl2":"http://localhost:9000/shopify/product/231241242/share?access_token=hello",
+		"baseUrl3":"http://localhost:9000/shopify/dashboard?access_token=hellomyfriend",
+		"productURL":"http://schminky.schmink.com",
+		"usernameFB":"mark.morgan@zantler.com",
+		"passwordFB":"moreaboutMoosh",
+		"username":"test001@mark.com",
+		"password":"DishDish",
+		"testsPossibles":[ "buildAnalyticsDataMap" ],
+		"tests":[   "buildAnalyticsDataMap" ],
+		"widths": [320, 600, 900 ]
+	  },
+
+	  
+	"uiData":
+	  {
+	    "baseUrl":"http://jetwing.azurewebsites.net/",
+		"baseUrl2":"http://localhost:9000/products",
+		"username":"test001@mark.com",
+		"userPW":"DishDish",
+		"tcFolder":"UIResponsive",
+		"testsPossibles":[ "home", "signUp","signIn", "dashboard", "catalog", "modalWindow", "forgotPassword", "resetPassword" , "acctSetting" ],
+		"tests":[  "signUp"  ],
+		"widths": [ 320, 600, 900 ]
+		
+	  },  
+	"newProductTests":
+	  {
+	    "baseUrl":"http://staging.shoppost.in/",
+		"username":"barry@bright",
+		"userPW":"qwerqwer",
+		"thisProduct":"1",
+		"testsPossibles":[ "nameDescripTags", "addingMedia (button, upload, URL, youTube, verifyThumbnail, thumbnailFunction)", "hoverMedia", "addMediaUrl (this also verifies image on inventory screen)", "addYouTube", "inventorySKUQty (thumbnail, skuQty, autoOffered, validation, saveNoVariation,  )",  "optionsAddThree (dynamic, savew/Variations )", "territories", "basicPricing", "advPricing" ],
+		"tests":[ "nameDescripTags", "optionsAddThree" ],
+		"widths": [ 320, 900, 1500 ]
+		
+	  },
+	  "newUserShareTests":
+	  {
+	    "baseUrl3":"http://test.diystorefronts.com/",
+		"baseUrl":"http://staging.shoppost.in/",
+		"baseUrl2":"http://118.102.176.20:81/",
+		"username2":"orchardstr@msn",
+		"username2":"i@ii",
+		"username":"ii",
+		"userPW":"DishDish",
+		"noVProduct": [ "My Best Test", "This is a test product but it is my very best test, best i've ever had (and that's saying something)", "one", "picture", "test", "http://farm9.staticflickr.com/8400/8653699786_8fac70c38a_h.jpg" ],
+		"thisProduct":"1",
+		"repeat": 10,
+		"territory": [ "US", "ZZ", "US", "CA", "IN" ],
+		"testsPossibles":[  "makeNoVariationsProduct", "makeVariationsProduct", "makeIncompleteProduct", "shareUI",  "generateNewUser (incomplete share info, no products)",  "makeIncompleteProduct", "newUserShareTests (noAcctInfoWarning, completeRegbutton, unAvailProdShare, FillingAcctFields, confirmSharefromOverlay )", "repeatProductList", "makeAllProdUnavail" ],
+		"tests":[ "generateNewUser",  "makeVariationsProduct", "makeNoVariationsProduct", "newUserShareTests" ],
+		"newOption": [ "Feathers", "many", "few" ],
+		"widths": [ 320, 600, 900 ]
+		
+	  },
+	  "landingPageTests":
+	  {
+	    "baseUrl":"http://staging.shoppost.in/",
+		"baseUrl2":"http://118.102.176.20:81/",
+		"username":"ii98999@sharklasers",
+		"username2":"orchardstr@msn",
+		"userPW":"DishDish",
+		"noVProduct": [ "My Best Test", "This is a test product but it is my very best test, best i've ever had (and that's saying something)", "one", "picture", "test", "http://farm9.staticflickr.com/8400/8653699786_8fac70c38a_h.jpg" ],
+		"thisProduct":"3",
+		"territory": [ "US", "ZZ", "US", "CA", "IN" ],
+		"testsPossibles":[  "makeNoVariationsProduct", "makeVariationsProduct", "checkUINoVarsLandingPage", "checkUIVarsLandingPage", "verifyLPElements", "checkLandingPageLinks", "checkLPBuyBtn", "verifyContCheckoutBtn", "verifyPayPalPurchase", "verifyAmazonPurchase", "checkLPNoInventory", "checkInventoryPostPurchase" ],
+		"tests":[  "checkUINoVarsLandingPage" ],
+		"comments":"1/10/14 checked tests up to checkUINoVarsLandingPage",
+		"newOption": [ "Feathers", "many", "few" ],
+		"widths": [ 320, 600, 900 ],
+		"buyQty":"2",
+		"shippingData": [ "Moosh", "GaLoosh", "mmorgan@diymediaservices.com", "1411 4th Ave", "", "AnyWhere", "WA", "98101", "USA" ]
+		
+	  },
+	  "widgetTests":
+	  {
+	    "baseUrl":"http://staging.shoppost.in/",
+		"baseUrl2":"http://118.102.176.20:81/",
+		"username3":"i@ii50",
+		"username":"ii77@mailinator",
+		"username2":"orchardstr@msn",
+		"userPW":"DishDish",
+		"noVProduct": [ "My Best Test", "This is a test product but it is my very best test, best i've ever had (and that's saying something)", "one", "picture", "test", "http://farm9.staticflickr.com/8400/8653699786_8fac70c38a_h.jpg" ],
+		"thisProduct":"3",
+		"territory": [ "US", "ZZ", "US", "CA", "IN" ],
+		"testsPossibles":[  "makeNoVariationsProduct", "makeVariationsProduct",  "confirmWidgetMainView", "confirmWidgetDescripView", "confirmWidgetMerchantView", "confirmWidgetImageView", "confirmWidgetVideoView", "confirmWidgetShareState", "confirmWidgetCheckout", "logOut" , "confirmFBPost", "confirmTwitterTweet", "verifyPaypalPurchase", "verifyAmazonPurchase" ],
+		"tests":[  "confirmFBPost" ],
+		"newOption": [ "Feathers", "many", "few" ],
+		"widths": [ 320, 600, 900 ],
+		"buyQty":3,
+		"shippingData": [ "Moosh", "Tatoosh", "ii50@mailinator.com", "1411 4th Ave", "", "AnyWhere", "WA", "98101", "USA" ],
+		"landPageUrl":"http://api.test.diystorefronts.com/store/KbyuGm99mkiudqIqAPev5g",
+		"fbUser":"mmorgan@diymediaservices.com",
+		"fbPW":"moreaboutMoosh",
+		"messageFBPost":"From autoTesting 77 account:",
+		"twitterUser":"MooshGaloosh",
+		"twitterPW":"moreaboutMoosh",
+		"shipCost":[ 2 , 1 ]
+		
+	  }
+	  
+	  
+
+
+	
+	 
+}
