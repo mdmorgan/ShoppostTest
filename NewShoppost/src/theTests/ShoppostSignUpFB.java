@@ -131,7 +131,7 @@ public class ShoppostSignUpFB {
 	}
 	
 	@Test
-	  public void test_signUpIn() throws Exception {
+	  public void test_signUpInFB() throws Exception {
 		wait = new WebDriverWait(driver, 10);
 		Random rand = new Random();
 		
@@ -145,9 +145,9 @@ public class ShoppostSignUpFB {
 		signup = new SignUpIn(driver, _td);   //signup methods
 		SignOut logout = new SignOut(driver);
 		
-		_usernameFB = _td.getSignupinFBTests().getUsernameFB();
-		_passkeyFB = _td.getSignupinFBTests().getPasswordFB();
-		_username = _td.getSignupinFBTests().getUsername();
+		_usernameFB = _td.getUsernameFB();
+		_passkeyFB = _td.getPasswordFB();
+		_username = _td.getUsername();
 		_freshUser = "";
 		
 		//System.out.println("testLength is: "+TestRunner.getTests().length);
@@ -163,7 +163,7 @@ public class ShoppostSignUpFB {
 					
 					
 				case "signupValidFB": //not initially signed into FB
-					signup.helloPlatform(_td.getSignupinFBTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					_password = _passkeyFB;
 					
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
@@ -196,7 +196,7 @@ public class ShoppostSignUpFB {
 					break;
 					
 				case "signupValidNoPreFB": //initially signed into FB
-					signup.helloPlatform(_td.getSignupinFBTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					_password = _passkeyFB;
 					
 					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
@@ -229,7 +229,7 @@ public class ShoppostSignUpFB {
 					break;
 
 				case "shareModalTest": //initially signed into FB
-					signup.helloPlatform(_td.getSignupinFBTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					Actions move = new Actions(driver);
 					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					
@@ -246,7 +246,7 @@ public class ShoppostSignUpFB {
 					
 				case "signinBlankEmail": 	
 					
-					signup.helloPlatform(_td.getSignupinFBTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					_password = _passkey;
 					signup.signInTest("", _password, 0);
 					Thread.sleep(1000);
@@ -262,7 +262,7 @@ public class ShoppostSignUpFB {
 					break;
 					
 				case "signinEmailBlankPW": 	
-					signup.helloPlatform(_td.getSignupinFBTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					_email = _username; 
 					
 					_password = _passkey;
@@ -282,7 +282,7 @@ public class ShoppostSignUpFB {
 					
 					
 				case "signinInvalidEmail": 
-					signup.helloPlatform(_td.getSignupinFBTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					_password = _passkey;
 					signup.signInTest("ii", _password, 0);
 					Thread.sleep(1000);
@@ -299,7 +299,7 @@ public class ShoppostSignUpFB {
 					break;
 				
 				case "signinBadUsernameBadPW": 
-					signup.helloPlatform(_td.getSignupinFBTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					_email = "com"+_username; //bad email
 					_password = _passkey;
 					signup.signInTest(_email, _password, 0);
@@ -318,7 +318,7 @@ public class ShoppostSignUpFB {
 				case "userAgreement": 
 					Window win = new Window(driver);
 					
-					signup.helloPlatform(_td.getSignupinFBTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					r = rand.nextInt(10000);
 					_email = _username+r+"@sharklasers.com";  //make fake email with random number (a brand new user)_email = _username+r+".com";  //make fake email with random number
 					_password = _passkey+_passkey;
@@ -360,7 +360,7 @@ public class ShoppostSignUpFB {
 					break;
 				
 				case "forgotPassword": 
-					signup.helloPlatform(_td.getSignupinFBTests().getBaseUrl()+"sign-up");
+					signup.helloPlatform(_td.getBaseUrl()+"sign-up");
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
 					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
 					Thread.sleep(500);
@@ -378,13 +378,13 @@ public class ShoppostSignUpFB {
 						System.out.println("ERROR! Email input not found");
 					}
 					finally {}
-					driver.get(_td.getSignupinFBTests().getBaseUrl()+"/sign-up"); 
+					driver.get(_td.getBaseUrl()+"/sign-up"); 
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
 					//driver.close();
 					break;
 				
 				case "signUp": 
-					signup.helloPlatform(_td.getSignupinFBTests().getBaseUrl()+"sign-up");
+					signup.helloPlatform(_td.getBaseUrl()+"sign-up");
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
 					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
 					Thread.sleep(500);
@@ -402,13 +402,13 @@ public class ShoppostSignUpFB {
 						System.out.println("ERROR! Email input not found");
 					}
 					finally {}
-					driver.get(_td.getSignupinFBTests().getBaseUrl()+"/sign-up"); 
+					driver.get(_td.getBaseUrl()+"/sign-up"); 
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
 					//driver.close();
 					break;
 				
 				case "getHelp": 
-					signup.helloPlatform(_td.getSignupinFBTests().getBaseUrl()+"sign-up");
+					signup.helloPlatform(_td.getBaseUrl()+"sign-up");
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
 					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
 					Thread.sleep(500);
@@ -426,7 +426,7 @@ public class ShoppostSignUpFB {
 						System.out.println("ERROR! Email input not found");
 					}
 					finally {}
-					driver.get(_td.getSignupinFBTests().getBaseUrl()+"/sign-up"); 
+					driver.get(_td.getBaseUrl()+"/sign-up"); 
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
 					//driver.close();
 					break;

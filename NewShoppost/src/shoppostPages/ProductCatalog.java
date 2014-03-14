@@ -93,6 +93,9 @@ public class ProductCatalog {
 	public void toAcctSet() {
 		acctSettings.click();
 	}
+	public void toDash() {
+		dashboardIcon.click();
+	}
 	public String getEmailAddress() {
 		return acctBtn.getText();
 	}

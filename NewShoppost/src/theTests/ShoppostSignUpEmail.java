@@ -49,7 +49,10 @@ import shoppostBeans.TestData;
 import shoppostBeans.SauceLabData;
 
 import shoppostPages.AnalyticsReporter;
+import shoppostPages.Home;
 import shoppostPages.ProductCatalog;
+import shoppostPages.ShareModal;
+import shoppostPages.ShareSetUp;
 import shoppostPages.SignUpSignIn;
 import shoppostPages.UserAgreement;
 
@@ -74,19 +77,19 @@ public class ShoppostSignUpEmail {
 	private static SauceLabData _sld;
 	//private static AcctSetData _asd;
 	private static LPData _ltd;
-	private String userName, _username, _password, _freshUser;
-	private String accessCode, _passkey, _email, _currUrl, _testCase, _emailAddress;
-	private DesiredCapabilities capabilities;
+	private String  _username, _password, _freshUser;
+	private String  _passkey, _email, _currUrl, _testCase, _emailAddress;
 	private int m;
-	private WebDriverWait wait, wait2;
-	private java.awt.Dimension screenSize;
-	private Dimension dim;
+	private WebDriverWait wait;
 	private int counter, r;
 	private SignUpIn signup;
 	private SignUpSignIn signupinPage;
 	private ProductCatalog catalog;
 	private AnalyticsReporter analyticsReporter;
 	private UserAgreement userAgreementPage;
+	private ShareModal shareModal;
+	private Home home;
+	private ShareSetUp shareSetUp;
 	private String _errorMsg, _testPlatform, _folderTestCase;
 	//private ScreenShot ss;
 	
@@ -144,11 +147,19 @@ public class ShoppostSignUpEmail {
 		signup = new SignUpIn(driver, _td);   //signup methods
 		SignOut logout = new SignOut(driver);
 		
-		catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-		analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
-		signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
+		signupinPage = new SignUpSignIn(driver);  //this waits for page to load AND initializes the pageFactory proxies
+		analyticsReporter = new AnalyticsReporter(driver); 
+		catalog = new ProductCatalog(driver);
+		shareModal = new ShareModal(driver);
+		shareSetUp = new ShareSetUp(driver);
+		home = new Home(driver);
+
 		
-		_username = _td.getSignupinTests().getUsername();
+		//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+		//analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
+		//signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
+		
+		_username = _td.getSignupinTests().getNewUsername();  //partial username
 		_passkey = _td.getSignupinTests().getHalfPassword();
 		_freshUser = "";
 		
@@ -166,7 +177,7 @@ public class ShoppostSignUpEmail {
   			switch (_testCase) {
   			
 				case "signupValid": //loads home page then redirects to signup page
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					
 					r = rand.nextInt(1000);
 					_freshUser = _username+r+"@sharklasers.com";  //make fake email with random number (a brand new user)
@@ -175,8 +186,7 @@ public class ShoppostSignUpEmail {
 					_password = _passkey+_passkey;
 					System.out.println(_email);
 					signup.signUpTest(_email, _password, 0);
-					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 					_emailAddress = catalog.getEmailAddress();
 					if(_emailAddress.equals(_email)) {
 						System.out.println("PASS Correct signup email: "+_email);
@@ -190,15 +200,13 @@ public class ShoppostSignUpEmail {
 					break;
 					
 				case "alreadyExist": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
-					_email = _td.getSignupinTests().getExistingUser(); 
-					if (_freshUser != "") { _email = _freshUser; }  //if there is a 'freshUser' then log in with same
+					signup.helloPlatform(_td.getBaseUrl());
+					_email = _td.getUsername(); 
+					//if (_freshUser != "") { _email = _freshUser; }  //if there is a 'freshUser' then log in with same
 					_password = _passkey+_passkey;
 					System.out.println(_email+", "+_password);
 					signup.signUpTest(_email, _password, 0);
 					
-					//signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
-					//System.out.println("bb");
 					Thread.sleep(500);
 					_errorMsg = signupinPage.getRedAdvisory();
 					if(_errorMsg.equals("Name "+_email+" is already taken.")) {
@@ -210,8 +218,22 @@ public class ShoppostSignUpEmail {
 					
 					break;
 					
+					
+				case "signupInvalidEmail": 	
+					signup.helloPlatform(_td.getBaseUrl());
+					_password = _passkey+_passkey;
+					signup.signUpTest(_username, _password, 0);
+					//Thread.sleep(1500);
+					_errorMsg = signupinPage.checkEmailError();
+					if(_errorMsg.equals("Please enter a valid email address.")) {
+						System.out.println("PASS Correct error advisory: "+_errorMsg);
+					} else {
+						fail("Fail - requires invalid email error advisory not: "+_errorMsg);
+					}
+					break;
+					
 				case "signupBlankEmail": 	//this will fail - issue in backlog 3/5/14
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					_password = _passkey+_passkey;
 					signup.signUpTest("", _password, 0);
 					Thread.sleep(1500);
@@ -227,23 +249,9 @@ public class ShoppostSignUpEmail {
 					
 					
 					break;
-					
-				case "signupInvalidEmail": 	
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
-					_password = _passkey+_passkey;
-					signup.signUpTest(_username, _password, 0);
-					//signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject for errors
-					//System.out.println("bb");
-					Thread.sleep(1500);
-					_errorMsg = signupinPage.checkEmailError();
-					if(_errorMsg.equals("Please enter a valid email address.")) {
-						System.out.println("PASS Correct error advisory: "+_errorMsg);
-					} else {
-						fail("Fail - requires invalid email error advisory not: "+_errorMsg);
-					}
-					break;
+
 				case "signupNoPW": //this will fail - issue in backlog 3/5/14
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					
 					r = rand.nextInt(10000);
 					_email = _username+r+"@sharklasers.com";  //make fake email with random number (a brand new user)
@@ -264,7 +272,7 @@ public class ShoppostSignUpEmail {
 					break;
 					
 				case "signupShortPW": 	
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					r = rand.nextInt(10000);
 					_email = _username+r+"@sharklasers.com";  //make fake email with random number (a brand new user)_email = _username+r+".com";  //make fake email with random number
 					_password = _passkey;
@@ -272,7 +280,7 @@ public class ShoppostSignUpEmail {
 					
 					//signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
 					//System.out.println("bb");
-					Thread.sleep(1500);
+					Thread.sleep(500);
 					
 					_errorMsg = signupinPage.getRedAdvisory();
 					if(_errorMsg.equals("The Password must be at least 6 characters long.")) {
@@ -284,7 +292,7 @@ public class ShoppostSignUpEmail {
 					break;
 					
 				case "signupMismatchPW": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					r = rand.nextInt(10000);
 					_email = _username+r+"@sharklasers.com";  //make fake email with random number (a brand new user)_email = _username+r+".com";  //make fake email with random number
 					_password = _passkey+_passkey;

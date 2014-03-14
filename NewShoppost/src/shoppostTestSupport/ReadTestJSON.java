@@ -24,8 +24,10 @@ public class ReadTestJSON {
 	
 	
 	public static void read() throws Exception {
-		
-		BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\DIY\\Dropbox\\MarkFolder\\TestingEclipseJava\\dataShoppost.json"));    //standard testing
+		                                                        
+		BufferedReader br = new BufferedReader(new FileReader("C:\\Projects\\ShoppostTest\\EclipseShoppost\\NewShoppost\\dataShoppost.json"));    //shoppost json in git (Mark's machine)
+		//BufferedReader br = new BufferedReader(new FileReader("C:\\Projects\\ShoppostTest\\dataShoppost.json"));    //shoppost json in git (Michal's machine)
+		//BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\DIY\\Dropbox\\MarkFolder\\TestingEclipseJava\\dataShoppost.json"));    //shoppost json in dropbox
 		//BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\DIY\\Dropbox\\MarkFolder\\TestingEclipseJava\\dataDDT_dbTest.json"));  //testing of large DB's 
 		
 		Gson gson = new GsonBuilder().create();

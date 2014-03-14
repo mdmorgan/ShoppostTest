@@ -171,25 +171,26 @@ public class ShoppostUI {
 		SignOut logout = new SignOut(driver);
 		Window win = new Window(driver);
 		
-		_username = _td.getUIData().getUsername();
-		_password = _td.getUIData().getUserPW();
+		_username = _td.getUsername();
+		_password = _td.getPassword();
 		_freshUser = "";
 		
 		
 		//System.out.println("testLength is: "+TestRunner.getTests().length);
-		//for (int k=0; k<_td.getUIData().getTests().size(); k++) {  //taking one testCase parameter at a time (this by-passes the need for TestRunner
-		for (int k=0; k<TestRunner.getTests().length; k++) {  //taking one testCase parameter at a time from cmd line
+		for (int k=0; k<_td.getUIData().getTests().size(); k++) {  //taking one testCase parameter at a time (this by-passes the need for TestRunner
+		//for (int k=0; k<TestRunner.getTests().length; k++) {  //taking one testCase parameter at a time from cmd line
 	    //for (int k=0; k<1; k++) {   //just a quick test
 			
-			_testCase = TestRunner.getTests()[k];
-			//_testCase = _td.getUIData().getTests().get(k);
+			//_testCase = TestRunner.getTests()[k];
+			_testCase = _td.getUIData().getTests().get(k);
 			_folderTestCase = _td.getUIData().getTcFolder()+_testCase;
 			switch (_testCase) {
   			
 					
 					
 				case "home": // FB shares
-					signup.helloPlatform(_td.getUIData().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
+					System.out.println("Four screenshots, varying browser widths: 320, 600, 900, max");
 					browsWidths(_testPlatform, _folderTestCase); // takes screenshots with varying browser widths
 					Thread.sleep(1000);
 					
@@ -198,8 +199,9 @@ public class ShoppostUI {
 					break;
 					
 				case "signUp": //
-					signup.helloPlatform(_td.getUIData().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					home.toSignup();  //open sign up page
+					System.out.println("Four screenshots, varying browser widths: 320, 600, 900, max");
 					browsWidths(_testPlatform, _folderTestCase); // takes screenshots with varying browser widths
 					
 					Thread.sleep(1000);
@@ -208,8 +210,9 @@ public class ShoppostUI {
 					break;
 					
 				case "signIn": //
-					signup.helloPlatform(_td.getUIData().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					home.toSignin();  // open sign in page
+					System.out.println("Four screenshots, varying browser widths: 320, 600, 900, max");
 					browsWidths(_testPlatform, _folderTestCase); // takes screenshots with varying browser widths
 					
 					Thread.sleep(1000);
@@ -220,10 +223,10 @@ public class ShoppostUI {
 					
 				case "dashboard": // 
 					
-					signup.helloPlatform(_td.getUIData().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					signup.signInTest(_username, _password, 0);
 					browsWidths(_testPlatform, _folderTestCase);
-					
+					System.out.println("Four screenshots, varying browser widths: 320, 600, 900, max");
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
 					
@@ -231,11 +234,11 @@ public class ShoppostUI {
 				
 				case "catalog": // see error message
 					
-					signup.helloPlatform(_td.getUIData().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					signup.signInTest(_username, _password, 0);
 					analyticsReporter.toCatalog();
 					browsWidths(_testPlatform, _folderTestCase);
-					
+					System.out.println("Four screenshots, varying browser widths: 320, 600, 900, max");
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
 					
@@ -243,14 +246,14 @@ public class ShoppostUI {
 					
 				case "modalWindow": // see error message
 					
-					signup.helloPlatform(_td.getUIData().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					signup.signInTest(_username, _password, 0);
 					analyticsReporter.toCatalog();
 					_productCount = catalog.getProductCount();
 					move.moveToElement(catalog.hoverRandomProduct());
 					catalog.getShare();
 					browsWidths(_testPlatform, _folderTestCase);
-					
+					System.out.println("Four screenshots, varying browser widths: 320, 600, 900, max");
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
 					
@@ -259,11 +262,11 @@ public class ShoppostUI {
 
 
 				case "forgotPassword": //Opens share modal window for random product
-					signup.helloPlatform(_td.getUIData().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					home.toSignin();  // open sign in page
 					signupinPage.toForgetful();
 					browsWidths(_testPlatform, _folderTestCase); // takes screenshots with varying browser widths
-					
+					System.out.println("Four screenshots, varying browser widths: 320, 600, 900, max");
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
 					
@@ -272,11 +275,11 @@ public class ShoppostUI {
 					
 				case "resetPassword": 	
 					
-					signup.helloPlatform(_td.getUIData().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					signup.signInTest(_username, _password, 0);
 					catalog.openAcctMenu();
 					catalog.toAcctSet();
-					
+					System.out.println("Four screenshots, varying browser widths: 320, 600, 900, max");
 					browsWidths(_testPlatform, _folderTestCase);
 					
 					Thread.sleep(1000);
@@ -288,11 +291,11 @@ public class ShoppostUI {
 
 					
 				case "acctSetting": 	
-					signup.helloPlatform(_td.getUIData().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					signup.signInTest(_username, _password, 0);
 					catalog.openAcctMenu();
 					catalog.toAcctSet();
-					
+					System.out.println("Four screenshots, varying browser widths: 320, 600, 900, max");
 					browsWidths(_testPlatform, _folderTestCase);
 					
 					Thread.sleep(1000);
@@ -300,7 +303,28 @@ public class ShoppostUI {
 					
 					break;
 
+				case "shopifyShareModal": // see error message
 					
+					signup.helloPlatform(_td.getShopifyShareUrl());
+					shareModal.goShare();
+					browsWidths(_testPlatform, _folderTestCase);
+					System.out.println("Four screenshots, varying browser widths: 320, 600, 900, max");
+					Thread.sleep(1000);
+					//logout.logoutFromCat();
+					
+					break;
+
+				case "shopifyDashboard": // see error message
+					
+					signup.helloPlatform(_td.getShopifyDashUrl());
+					analyticsReporter.toDashboard();
+					browsWidths(_testPlatform, _folderTestCase);
+					System.out.println("Four screenshots, varying browser widths: 320, 600, 900, max");
+					Thread.sleep(1000);
+					//logout.logoutFromCat();
+					
+					break;
+	
 					
   				}
 		}

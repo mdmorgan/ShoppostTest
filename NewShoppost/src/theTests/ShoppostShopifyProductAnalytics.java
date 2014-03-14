@@ -51,6 +51,7 @@ import shoppostBeans.SauceLabData;
 
 
 import shoppostPages.Home;
+import shoppostPages.ProductReporter;
 import shoppostPages.ShareSetUp;
 import shoppostPages.ProductCatalog;
 import shoppostPages.ShareModal;
@@ -75,7 +76,7 @@ import shoppostTestSupport.Window;
 
 @RunWith(Parameterized.class)   //this runs the tests serially one browser at a time
 //@RunWith(Parallelized.class)    //this will run the tests in parallel and will open a new thread for each browser simultaneously
-public class ShoppostAnalytics {
+public class ShoppostShopifyProductAnalytics {
 	
 	private String browser;
 	private WebDriver driver;
@@ -97,14 +98,15 @@ public class ShoppostAnalytics {
 	private ProductCatalog catalog;
 	private FBsignIn FBone, FBtwo;
 	private AnalyticsReporter analyticsReporter;
+	private ProductReporter productReporter;
 	private ShareModal shareModal;
 	private ShareSetUp shareSetUp;
 	private Home home;
-	private String _errorMsg;
+	private String _errorMsg, _testPlatform;
 	private Window win;
 	private Set beforePopup;
-	private HashMap _fadm;  //full analytics data map
-	private String _redirectTotal, _redirectTotal_b;
+	private HashMap _padm;
+	private String _redirectTotal, _redirectTotal_b, _folderTestCase;
 	private String[] _socialReactions,_geoLocations, _fbRedirects,_twitRedirects,_pinRedirects,_googRedirects,_otherRedirects;
 	private String[] _socialReactions_b,_geoLocations_b,_fbRedirects_b,_twitRedirects_b,_pinRedirects_b,_googRedirects_b,_otherRedirects_b;
 	
@@ -130,7 +132,7 @@ public class ShoppostAnalytics {
 		return Arrays.asList(browsersStrings);
 	} 
 	
-	public ShoppostAnalytics (String browser){
+	public ShoppostShopifyProductAnalytics (String browser){
 		
 		this.browser = browser;
 	}
@@ -142,7 +144,7 @@ public class ShoppostAnalytics {
 		
 		GetDrivers getDriver = new GetDrivers(this.browser);   //instantiate GetDriver
 		driver = getDriver.set();
-		
+		_testPlatform = getDriver.getPlatform();  //gets platform (must match qmetry platform in test cases)
 		return;
 		
 	}
@@ -154,6 +156,7 @@ public class ShoppostAnalytics {
 		Actions move = new Actions(driver);
 		signupinPage = new SignUpSignIn(driver);  //this waits for page to load AND initializes the pageFactory proxies
 		analyticsReporter = new AnalyticsReporter(driver); 
+		productReporter = new ProductReporter(driver);
 		catalog = new ProductCatalog(driver);
 		shareModal = new ShareModal(driver);
 		shareSetUp = new ShareSetUp(driver);
@@ -173,11 +176,10 @@ public class ShoppostAnalytics {
 		Window win = new Window(driver);
 		
 		_usernameFB = _td.getUsernameFB();
-		//System.out.println(_usernameFB);
-		//System.out.println("A");
 		_passkeyFB = _td.getPasswordFB();
 		_username = _td.getUsername();
 		_password = _td.getPassword();
+		_usernameTwitter = _td.getUsernameTwitter();
 		_freshUser = "";
 		
 		//System.out.println("testLength is: "+TestRunner.getTests().length);
@@ -188,27 +190,25 @@ public class ShoppostAnalytics {
   			//_testCase = TestRunner.getTests()[k];
 			_testCase = _td.getAnalyticsTests().getTests().get(k);
 			//_testCase = "signupValid";
+			_folderTestCase = _td.getAnalyticsTests().getTcFolder()+_testCase;
   			switch (_testCase) {
   			
 					
 					
-				case "buildFullAnalyticsDataMap": // 
-					signup.helloPlatform(_td.getBaseUrl());
-					signup.signInTest(_username, _password, 0);
-					Thread.sleep(500);
+				case "buildProdAnalyticsDataMap": // 
+					signup.helloPlatform(_td.getShopifyShareUrl());
+					shareModal.goStats();
 					
-					_fadm = analyticsDataMap.buildFullMap("7"); //pass in the date range  7, 14, or 30
-					_socialReactions = (String[]) _fadm.get("socialReactions");
-					_geoLocations = (String[]) _fadm.get("geoLocations");
-					_redirectTotal = (String) _fadm.get("redirectTotal");
-					_fbRedirects = (String[]) _fadm.get("facebookRedirects");
-					_twitRedirects = (String[]) _fadm.get("twitterRedirects");
-					_pinRedirects = (String[]) _fadm.get("pinterestRedirects");
-					_googRedirects = (String[]) _fadm.get("googlePlusRedirects");
-					_otherRedirects = (String[]) _fadm.get("otherRedirects");
+					_padm = analyticsDataMap.buildProdMap("7"); //pass in the date range  7, 14, or 30
+					_socialReactions = (String[]) _padm.get("socialReactions");
+					_geoLocations = (String[]) _padm.get("geoLocations");
+					_redirectTotal = (String) _padm.get("redirectTotal");
+					_fbRedirects = (String[]) _padm.get("facebookRedirects");
+					_twitRedirects = (String[]) _padm.get("twitterRedirects");
+					_pinRedirects = (String[]) _padm.get("pinterestRedirects");
+					_googRedirects = (String[]) _padm.get("googlePlusRedirects");
+					_otherRedirects = (String[]) _padm.get("otherRedirects");
 					
-					String[] _productMostGoogShares3 = (String[]) _fadm.get("productMostGoogSharesTop3");
-					String[] _productMostOtherRefers3 = (String[]) _fadm.get("productMostOtherReferralsTop3");
 					System.out.println("FB view count: "+_socialReactions[0]);
 					System.out.println("FB share count: "+_socialReactions[1]);
 					System.out.println("FB Like count: "+_socialReactions[2]);
@@ -219,11 +219,7 @@ public class ShoppostAnalytics {
 					System.out.println("total Redirects: "+_redirectTotal);
 					System.out.println("other redirects %: "+_otherRedirects[0]);
 					System.out.println("other redirects redirects: "+_otherRedirects[1]);
-					System.out.println("product 3rd most shared google: "+_productMostGoogShares3[4]);
-					System.out.println("product 3rd most shared google ct: "+_productMostGoogShares3[5]);
-					System.out.println("product 3rd most referred other: "+_productMostOtherRefers3[4]);
-					System.out.println("product 3rd most referred other ct: "+_productMostOtherRefers3[5]);
-					//String [][] optionValues = (String[][]) _hm.get("_optionValues");
+					System.out.println("2nd geoLocation: "+_geoLocations[2]+", "+_geoLocations[3]);
 					
 					/**System.out.println("name = "+shareModal.getProductName());
 					if(_shareTitle.equals(shareModal.getProductName())) {
@@ -239,16 +235,50 @@ public class ShoppostAnalytics {
 					
 					break;
 					
-				case "confirmTwitterShare": // twitter shares
-					signup.helloPlatform(_td.getBaseUrl());
-					//signup.signInTest(_email, _password, 0);
-					analyticsReporter.toCatalog();
+				case "preProdDashSS":
+					signup.helloPlatform(_td.getShopifyShareUrl());
+					shareModal.goStats();
+					Thread.sleep(1000);
+					ss.takeTheShot(1, "platform", _testPlatform, _folderTestCase);
+					break;
 					
-					_productCount = catalog.getProductCount();
-					move.moveToElement(catalog.hoverRandomProduct());  //move to random product
+				case "postProdDashSS":
+					signup.helloPlatform(_td.getShopifyShareUrl());
+					shareModal.goStats();
 					
-					catalog.getShare(); //open share modal 
+					Thread.sleep(1000);
+					ss.takeTheShot(1, "platform", _testPlatform, _folderTestCase);
+					break;
+
+ 				case "shopifyToFB": // FB shares
+					signup.helloPlatform(_td.getShopifyShareUrl());
+					 
 					//collect info about the windows
+					beforePopup = driver.getWindowHandles();   //collect windows and then send them to the change window class
+					_currUrl = driver.getCurrentUrl();  //(FACEBOOK test) get current url which is the share modal
+					_mwh = driver.getWindowHandle();   //get current window name
+					//now open new window
+					shareModal.shareFB();   //this opens a new tab for FB sharing now need to switch driver to that new window
+					driver.switchTo().window(win.changeWindowForShare(beforePopup));  //this clicks the link and switches windows because win.changeWindowForShare() returns a URL to switch to
+					shareSetUp.loginFacebook(_usernameFB, _passkeyFB);
+					
+					shareSetUp.shareToTimeline(_td.getShareData().getShareMessage());
+					
+					
+					driver.switchTo().window(_mwh);  //back to overlay
+					driver.get(_currUrl);   //run with overlay
+					Thread.sleep(1000);
+					//catalog.getShare();
+					
+					Thread.sleep(1000);
+					//logout.logoutFromCat();
+					
+					break;
+
+				
+				case "shopifyToTwitter": // twitter shares
+					signup.helloPlatform(_td.getShopifyShareUrl());
+					
 					beforePopup = driver.getWindowHandles();   //collect windows and then send them to the change window class
 					_currUrl = driver.getCurrentUrl();  // get current url which is the share modal
 					_mwh = driver.getWindowHandle();   //get current window name
@@ -256,22 +286,12 @@ public class ShoppostAnalytics {
 					shareModal.shareTwitter();   //this opens a new tab for twitter sharing now need to switch driver to that new window
 					driver.switchTo().window(win.changeWindowForShare(beforePopup));  //this clicks the link and switches windows because win.changeWindowForShare() returns a URL to switch to
 					
-					_initialTweet = shareSetUp.getTweet();
 					shareSetUp.loginTweetTwitter(_usernameTwitter, _passkeyFB);
+					
 					//driver.close(); //closes current window - maybe	
 
 					driver.switchTo().window(_mwh);  //back to modal
 					driver.get(_currUrl);   //run with modal
-					move.moveToElement(catalog.hoverProductAgain());
-					catalog.getShare();
-					shareModal.goLink();
-					System.out.println("tweet = "+_initialTweet);
-					if(_initialTweet.equals(shareModal.getProductName()+" "+shareModal.getLPUrl())) {
-						System.out.println("PASS Correct data to twitter: "+_initialTweet);
-					} else {
-						fail("FAIL - invalid data to tiwtter: "+_initialTweet);
-					}
-					
 					
 					
 					Thread.sleep(1000);
@@ -279,16 +299,9 @@ public class ShoppostAnalytics {
 					
 					break;
 					
-				case "confirmPinterestShare": // see error message
+				case "shopifyToPinterest": // see error message
 					
-					signup.helloPlatform(_td.getBaseUrl());
-					//signup.signInTest(_email, _password, 0);
-					analyticsReporter.toCatalog();
-					
-					_productCount = catalog.getProductCount();
-					move.moveToElement(catalog.hoverRandomProduct());  //move to random product
-					
-					catalog.getShare(); //open share modal 
+					signup.helloPlatform(_td.getShopifyShareUrl());
 					//collect info about the windows
 					beforePopup = driver.getWindowHandles();   //collect windows and then send them to the change window class
 					_currUrl = driver.getCurrentUrl();  //get current url which is the share modal
@@ -300,41 +313,20 @@ public class ShoppostAnalytics {
 					shareSetUp.havePinAcct();
 					Thread.sleep(1000);
 					shareSetUp.loginPinterest(_usernameFB, _passkeyFB);
-					_pinTitle = shareSetUp.getPinTitle();  //
 					shareSetUp.pinToPinterest();
 					//driver.close(); //closes current window - maybe	
 
 					driver.switchTo().window(_mwh);  //back to modal
 					driver.get(_currUrl);   //run with modal
-					move.moveToElement(catalog.hoverProductAgain());
-					catalog.getShare();
-					//shareModal.goLink();
-					System.out.println("pinTitle = "+_pinTitle);
-					System.out.println("productName = "+shareModal.getProductName());
-					if(_pinTitle.equals(shareModal.getProductName())) {
-						System.out.println("PASS Correct data to twitter: "+_pinTitle);
-					} else {
-						fail("FAIL - invalid data to tiwtter: "+_pinTitle);
-					}
-					
-					
 					
 					Thread.sleep(1000);
 					//logout.logoutFromCat();
 					
 					break;
 				
-				case "confirmGooglePlusShare": // see error message
+				case "shopifyToGoogle": // see error message
 					
-					signup.helloPlatform(_td.getBaseUrl());
-					//signup.signInTest(_email, _password, 0);
-					
-					analyticsReporter.toCatalog();
-					
-					_productCount = catalog.getProductCount();
-					move.moveToElement(catalog.hoverRandomProduct());  //move to random product
-					
-					catalog.getShare(); //open share modal 
+					signup.helloPlatform(_td.getShopifyShareUrl());
 					//collect info about the windows
 					beforePopup = driver.getWindowHandles();   //collect windows and then send them to the change window class
 					_currUrl = driver.getCurrentUrl();  //get current url which is the share modal
@@ -343,46 +335,15 @@ public class ShoppostAnalytics {
 					shareModal.shareGooglePlus();   //this opens a new tab for googlePlus sharing now need to switch driver to that new window
 					driver.switchTo().window(win.changeWindowForShare(beforePopup));  //this clicks the link and switches windows because win.changeWindowForShare() returns a URL to switch to
 					
-					//shareSetUp.signinGoogplus(_usernameFB, _td.getAnalyticsTests().getPasswordGoog());
-					Thread.sleep(8000);
-					_googTitle = shareSetUp.getGoogTitle();
-					//shareSetUp.shareToGoog(_td.getAnalyticsTests().getGoogComment());  //
-					//driver.close(); //closes current window - maybe	
-
+					shareSetUp.signinGoogplus(_usernameFB, _td.getPasswordGoog());
+					Thread.sleep(3000);
+					//_googTitle = shareSetUp.getGoogTitle();
+					shareSetUp.shareToGoog(_td.getShareData().getGoogComment());  //
+					
 					driver.switchTo().window(_mwh);  //back to modal
 					driver.get(_currUrl);   //run with modal
-					move.moveToElement(catalog.hoverProductAgain());
-					catalog.getShare();
-					//shareModal.goLink();
-					System.out.println("googTitle = "+_googTitle);
-					System.out.println("productName = "+shareModal.getProductName());
-					if(_googTitle.equals(shareModal.getProductName())) {
-						System.out.println("PASS Correct data to twitter: "+_googTitle);
-					} else {
-						fail("FAIL - invalid data to tiwtter: "+_googTitle);
-					}
-					
-					
 					
 					Thread.sleep(1000);
-					//logout.logoutFromCat();
-					
-					break;
-
-
-
-				case "shareModalTest": //Opens share modal window for random product
-					signup.helloPlatform(_td.getBaseUrl());
-					Actions move2 = new Actions(driver);
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
-					_productCount = catalog.getProductCount();
-					move2.moveToElement(catalog.hoverRandomProduct());
-					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					catalog.getShare();
-					Thread.sleep(2000);
-					shareModal.closeShareModal();
-					Thread.sleep(2000);
 					//logout.logoutFromCat();
 					
 					break;

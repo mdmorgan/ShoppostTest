@@ -35,6 +35,9 @@ public class AnalyticsReporter {
 	@FindBy (id = "navProducts")
 	private WebElement productsIcon;
 	
+	@FindBy (className = "chart")
+	private WebElement donutChart;
+	
 	//socialReactions
 	@FindBy (xpath ="//li/strong[@id='dashboardSocialFacebookCount0']")
 	private WebElement fbViewCount;
@@ -69,28 +72,28 @@ public class AnalyticsReporter {
 	
 	//referrals
 	@FindBy (id = "dashboardTotalReferrals")
-	private WebElement allReferrals;
+	private WebElement allRedirects;
 	
 	@FindBy (xpath = "//tr[@class='facebook']/td[@id='dashboardReferralPercent0']")
-	private WebElement referralsFBPercent;
+	private WebElement redirectsFBPercent;
 	@FindBy (xpath = "//tr[@class='facebook']/td[@id='dashboardReferralValue0']")
-	private WebElement referralsFBCount;
+	private WebElement redirectsFBCount;
 	@FindBy (xpath = "//tr[@class='twitter']/td[@id='dashboardReferralPercent1']")
-	private WebElement referralsTwitterPercent;
+	private WebElement redirectsTwitterPercent;
 	@FindBy (xpath = "//tr[@class='twitter']/td[@id='dashboardReferralValue1']")
-	private WebElement referralsTwitterCount;
+	private WebElement redirectsTwitterCount;
 	@FindBy (xpath = "//tr[@class='pinterest']/td[@id='dashboardReferralPercent2']")
-	private WebElement referralsPinterestPercent;
+	private WebElement redirectsPinterestPercent;
 	@FindBy (xpath = "//tr[@class='pinterest']/td[@id='dashboardReferralValue2']")
-	private WebElement referralsPinterestCount;
+	private WebElement redirectsPinterestCount;
 	@FindBy (xpath = "//tr[@class='googleplus']/td[@id='dashboardReferralPercent3']")
-	private WebElement referralsGoogleplusPercent;
+	private WebElement redirectsGoogleplusPercent;
 	@FindBy (xpath = "//tr[@class='googleplus']/td[@id='dashboardReferralValue3']")
-	private WebElement referralsGoogleplusCount;
+	private WebElement redirectsGoogleplusCount;
 	@FindBy (xpath = "//tr[@class='other']/td[@id='dashboardReferralPercent4']")
-	private WebElement referralsOtherPercent;
+	private WebElement redirectsOtherPercent;
 	@FindBy (xpath = "//tr[@class='other']/td[@id='dashboardReferralValue4']")
-	private WebElement referralsOtherCount;
+	private WebElement redirectsOtherCount;
 	
 	//most shared single product drop menu
 	@FindBy (id = "mostSharesDropDownButton")
@@ -166,8 +169,9 @@ public class AnalyticsReporter {
 		PageFactory.initElements(finder, this);
 	}
 
-	
-
+	public boolean isDonutVisible() {
+		return donutChart.isDisplayed();
+	}
 	public void signOut() {
 		signOut.click();
 	}
@@ -179,6 +183,9 @@ public class AnalyticsReporter {
 	}
 	public void toCatalog() {
 		productsIcon.click();
+	}
+	public void toDashboard() {
+		dashboardIcon.click();
 	}
 	public String getEmailAddress() {
 		String emailAddress = "";
@@ -227,40 +234,47 @@ public class AnalyticsReporter {
 		return _geoLocData;
 	}
 	
-	public String getReferralTotal() {
-		return allReferrals.getText();
+	public String getRedirectTotal() {
+		return allRedirects.getText();
 	}
-	public String[] getFBReferrals() {
-		String _fbReferralData[] = new String[2];
-		_fbReferralData[0] = referralsFBPercent.getText();
-		_fbReferralData[1] = referralsFBCount.getText();
-		return _fbReferralData;
+	public String[] getFBRedirects() {
+		String _fbRedirectData[] = new String[2];
+		_fbRedirectData[0] = redirectsFBPercent.getText();
+		_fbRedirectData[1] = redirectsFBCount.getText();
+		return _fbRedirectData;
 	}
-	public String[] getTwitReferrals() {
-		String _twitReferralData[] = new String[2];
-		_twitReferralData[0] = referralsTwitterPercent.getText();
-		_twitReferralData[1] = referralsTwitterCount.getText();
-		return _twitReferralData;
+	public String[] getTwitRedirects() {
+		String _twitRedirectData[] = new String[2];
+		_twitRedirectData[0] = redirectsTwitterPercent.getText();
+		_twitRedirectData[1] = redirectsTwitterCount.getText();
+		return _twitRedirectData;
 	}
-	public String[] getPinReferrals() {
-		String _pinReferralData[] = new String[2];
-		_pinReferralData[0] = referralsPinterestPercent.getText();
-		_pinReferralData[1] = referralsPinterestCount.getText();
-		return _pinReferralData;
+	public String[] getPinRedirects() {
+		String _pinRedirectData[] = new String[2];
+		_pinRedirectData[0] = redirectsPinterestPercent.getText();
+		_pinRedirectData[1] = redirectsPinterestCount.getText();
+		return _pinRedirectData;
 	}
-	public String[] getGoogReferrals() {
-		String _googReferralData[] = new String[2];
-		_googReferralData[0] = referralsGoogleplusPercent.getText();
-		_googReferralData[1] = referralsGoogleplusCount.getText();
-		return _googReferralData;
+	public String[] getGoogRedirects() {
+		String _googRedirectData[] = new String[2];
+		_googRedirectData[0] = redirectsGoogleplusPercent.getText();
+		_googRedirectData[1] = redirectsGoogleplusCount.getText();
+		return _googRedirectData;
 	}
-	public String[] getOtherReferrals() {
-		String _otherReferralData[] = new String[2];
-		_otherReferralData[0] = referralsOtherPercent.getText();
-		_otherReferralData[1] = referralsOtherCount.getText();
-		return _otherReferralData;
+	public String[] getOtherRedirects() {
+		String _otherRedirectData[] = new String[2];
+		_otherRedirectData[0] = redirectsOtherPercent.getText();
+		_otherRedirectData[1] = redirectsOtherCount.getText();
+		return _otherRedirectData;
 	}
-	
+	public void openMostShared() {
+		mostAllSharesMenu.click();  //selects all networks
+		productNameMostShares.click();  //opens individual dash
+	}
+	public void openMostReferred() {
+		mostAllReferralsMenu.click();  //selects all networks
+		productNameMostReferrals.click();  //opens individual dash
+	}
 	public String[] getMostSharesTop3(String network)  {
 		String _mostSharesTop3[] = new String[6];
 		mostSharesMenuBtn.click();  //pulls down menu

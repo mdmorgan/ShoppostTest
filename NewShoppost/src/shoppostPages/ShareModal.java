@@ -56,9 +56,6 @@ public class ShareModal {
 	@FindBy (id = "shareGooglePlus")
 	private WebElement modalGooglePlus;
 	
-	@FindBy (id = "linkInput")
-	private WebElement landingPageLink;
-	
 	@FindBy (id = "previewButton")
 	private WebElement previewBtn;
 
@@ -67,6 +64,12 @@ public class ShareModal {
 	
 	@FindBy (id = "linkInput")
 	private WebElement lpUrl;
+	
+	@FindBy (id = "embedCode")
+	private WebElement embedField;
+	
+	@FindBy (className = "chart")
+	private WebElement donutChart;
 
 	public ShareModal (WebDriver driver) {
 		ElementLocatorFactory finder = new AjaxElementLocatorFactory(driver, DRIVER_WAIT);
@@ -112,8 +115,32 @@ public class ShareModal {
 	public void goLink() {
 		modalLinkTab.click();
 	}
+	public void goShare() {
+		modalSocialTab.click();
+	}
+	public void goEmbed() {
+		modalEmbedTab.click();
+	}
 	public String getLPUrl() {
 		return lpUrl.getText();
+	}
+	public String getEmbedCode() {
+		return embedField.getText();
+	}
+	public boolean isPreviewVisible() {
+		return previewBtn.isDisplayed();
+	}
+	public boolean isEmbedVisible() {
+		return embedField.isDisplayed();
+	}
+	public boolean isFBVisible() {
+		return modalFacebook.isDisplayed();
+	}
+	public boolean isDonutVisible() {
+		return donutChart.isDisplayed();
+	}
+	public void openLandingPage() {
+		previewBtn.click();
 	}
 
 }

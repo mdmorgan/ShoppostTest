@@ -50,7 +50,10 @@ import shoppostBeans.TestData;
 import shoppostBeans.SauceLabData;
 
 import shoppostPages.AnalyticsReporter;
+import shoppostPages.Home;
 import shoppostPages.ProductCatalog;
+import shoppostPages.ShareModal;
+import shoppostPages.ShareSetUp;
 import shoppostPages.SignUpSignIn;
 
 import shoppostPages.UserAgreement;
@@ -75,18 +78,19 @@ public class ShoppostSignInEmail {
 	private static SauceLabData _sld;
 	//private static AcctSetData _asd;
 	private static LPData _ltd;
-	private String userName, _username, _password, _freshUser;
-	private String accessCode, _passkey, _email, _currUrl, _testCase, _emailAddress;
+	private String _username, _password, _freshUser;
+	private String _email, _currUrl, _testCase, _emailAddress;
 	private DesiredCapabilities capabilities;
 	private int m;
 	private WebDriverWait wait, wait2;
-	private java.awt.Dimension screenSize;
-	private Dimension dim;
 	private int counter, r;
 	private SignUpIn signup;
 	private SignUpSignIn signupinPage;
 	private UserAgreement userAgreementPage;
 	private ProductCatalog catalog;
+	private ShareModal shareModal;
+	private ShareSetUp shareSetUp;
+	private Home home;
 	private AnalyticsReporter analyticsReporter;
 	private String _errorMsg;
 	//private ScreenShot ss;
@@ -143,13 +147,16 @@ public class ShoppostSignInEmail {
 		
 		signup = new SignUpIn(driver, _td);   //signup methods
 		SignOut logout = new SignOut(driver);
-		catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-		analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
-		signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
+		signupinPage = new SignUpSignIn(driver);  //this waits for page to load AND initializes the pageFactory proxies
+		analyticsReporter = new AnalyticsReporter(driver); 
+		catalog = new ProductCatalog(driver);
+		shareModal = new ShareModal(driver);
+		shareSetUp = new ShareSetUp(driver);
+		home = new Home(driver);
 
 		
-		_username = _td.getSignupinTests().getExistingUser();
-		_passkey = _td.getSignupinTests().getUserPW();
+		_username = _td.getUsername();  //existing user
+		_password = _td.getPassword();   //existing user password
 		_freshUser = "";
 		
 		//System.out.println("testLength is: "+TestRunner.getTests().length);
@@ -165,12 +172,11 @@ public class ShoppostSignInEmail {
 					
 					
 				case "signinValid": //without remember me
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					_email = _username;  
-					_password = _passkey;
 					signup.signInTest(_email, _password, 0);
 					
-					Thread.sleep(1500);
+					Thread.sleep(500);
 					_emailAddress = catalog.getEmailAddress();
 					
 					if(_emailAddress.equals(_email)) {
@@ -186,12 +192,11 @@ public class ShoppostSignInEmail {
 					break;
 					
 				case "signinValidRemember": //without remember me
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					_email = _username;  
-					_password = _passkey;
 					signup.signInTest(_email, _password, 1);  //1 = remember me
 					
-					Thread.sleep(1500);
+					Thread.sleep(500);
 					_emailAddress = catalog.getEmailAddress();
 					
 					if(_emailAddress.equals(_email)) {
@@ -208,8 +213,7 @@ public class ShoppostSignInEmail {
 					
 				case "signinBlankEmail": 	// fails, issue called out 3/5/14
 					
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
-					_password = _passkey;
+					signup.helloPlatform(_td.getBaseUrl());
 					signup.signInTest("", _password, 0);
 					Thread.sleep(1000);
 					
@@ -223,10 +227,9 @@ public class ShoppostSignInEmail {
 					break;
 					
 				case "signinEmailBlankPW": 	// fails, issue called out 3/5/14
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					_email = _username; 
 					
-					_password = _passkey;
 					signup.signInTest(_email, "", 0);
 					
 					_errorMsg = signupinPage.getRedAdvisory();
@@ -241,9 +244,8 @@ public class ShoppostSignInEmail {
 					
 					
 				case "signinInvalidEmail": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
-					_password = _passkey;
-					signup.signInTest("ii", _password, 0);
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest("test", _password, 0);
 					Thread.sleep(1500);
 					
 					_errorMsg = signupinPage.checkEmailError();
@@ -257,9 +259,8 @@ public class ShoppostSignInEmail {
 					break;
 				
 				case "signinBadUsernameBadPW": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					_email = "com"+_username; //bad email
-					_password = _passkey;
 					signup.signInTest(_email, _password, 0);
 					
 					Thread.sleep(1500);

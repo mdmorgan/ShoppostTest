@@ -1,11 +1,16 @@
 package shoppostPages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.WebElement;
 
 public class AcctSettings {
+	private int DRIVER_WAIT = 15;
 
 	@FindBy(id = "accountMenu")
 	private WebElement acctmenu;
@@ -25,7 +30,10 @@ public class AcctSettings {
 	@FindBy (id = "navLogo")
 	private WebElement logoBtn;
 	
-	
+	public AcctSettings (WebDriver driver) {
+		ElementLocatorFactory finder = new AjaxElementLocatorFactory(driver, DRIVER_WAIT);
+		PageFactory.initElements(finder, this);
+	}
 	
 	public void signOut() {
 		signOut.click();

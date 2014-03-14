@@ -48,8 +48,11 @@ import shoppostBeans.LPData;
 import shoppostBeans.TestData;
 import shoppostBeans.SauceLabData;
 
+import shoppostPages.Home;
 import shoppostPages.ProductCatalog;
+import shoppostPages.ProductReporter;
 import shoppostPages.ShareModal;
+import shoppostPages.ShareSetUp;
 import shoppostPages.SignUpSignIn;
 import shoppostPages.UserAgreement;
 import shoppostPages.FBsignIn;
@@ -91,7 +94,10 @@ public class ShoppostCatalog {
 	private FBsignIn FBone, FBtwo;
 	private AnalyticsReporter analyticsReporter;
 	private ShareModal shareModal;
-	private String _errorMsg;
+	private Home home;
+	private ProductReporter productReporter;
+	private ShareSetUp shareSetUp;
+	private String _errorMsg, _testPlatform, _folderTestCase;
 	//private ScreenShot ss;
 	
 	
@@ -127,16 +133,24 @@ public class ShoppostCatalog {
 		
 		GetDrivers getDriver = new GetDrivers(this.browser);   //instantiate GetDriver
 		driver = getDriver.set();
-		
+		_testPlatform = getDriver.getPlatform();  //gets platform (must match qmetry platform in test cases)
 		return;
 		
 	}
 	
 	@Test
 	  public void test_productCatalog() throws Exception {
-		wait = new WebDriverWait(driver, 10);
+		//wait = new WebDriverWait(driver, 10);
+		signupinPage = new SignUpSignIn(driver);  //this waits for page to load AND initializes the pageFactory proxies
+		analyticsReporter = new AnalyticsReporter(driver); 
+		productReporter = new ProductReporter(driver);
+		catalog = new ProductCatalog(driver);
+		shareModal = new ShareModal(driver);
+		shareSetUp = new ShareSetUp(driver);
+		home = new Home(driver);
+
 		Random rand = new Random();
-		
+		Actions move = new Actions(driver);
 		ReadTestJSON.read();
 		_td = ReadTestJSON.get_td();
 		
@@ -147,10 +161,10 @@ public class ShoppostCatalog {
 		signup = new SignUpIn(driver, _td);   //signup methods
 		SignOut logout = new SignOut(driver);
 		
-		_usernameFB = _td.getCatalogTests().getUsernameFB();
-		_passkeyFB = _td.getCatalogTests().getPasswordFB();
-		_username = _td.getCatalogTests().getUsername();
-		_password = _td.getCatalogTests().getPassword();
+		_usernameFB = _td.getUsernameFB();
+		_passkeyFB = _td.getPasswordFB();
+		_username = _td.getUsername();
+		_password = _td.getPassword();
 		_freshUser = "";
 		
 		//System.out.println("testLength is: "+TestRunner.getTests().length);
@@ -161,25 +175,20 @@ public class ShoppostCatalog {
   			//_testCase = TestRunner.getTests()[k];
 			_testCase = _td.getCatalogTests().getTests().get(k);
 			//_testCase = "signupValid";
+			_folderTestCase = _td.getUIData().getTcFolder()+_testCase;
   			switch (_testCase) {
   			
 					
 					
 				case "addProductValidURL": // new product displayed in share modal
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
-					//signup.signInTest(_email, _password, 0);
-					//analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
-					//analyticsReporter.toCatalog();
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.toCatalog();
 					catalog.addProduct();
-					Thread.sleep(1000);
-					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject
+					//Thread.sleep(1000);
 					catalog.scrape(_td.getCatalogTests().getProductURL());  //this should open the share modal
-					Thread.sleep(1000);
-					//shareModal.closeShareModal();
-					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject
+					Thread.sleep(500);
+					shareModal.closeShareModal();
 					catalog.closeAdd();
 					
 					Thread.sleep(1000);
@@ -188,14 +197,10 @@ public class ShoppostCatalog {
 					break;
 					
 				case "addProductInvalidURL": // from catalog
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
-					//signup.signInTest(_email, _password, 0);
-					//analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
-					//analyticsReporter.toCatalog();
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.toCatalog();
 					catalog.addProduct();
-					Thread.sleep(1000);
 					catalog.scrape(_td.getCatalogTests().getProductURL()+"xx");  //bad URL
 					Thread.sleep(1000);
 					
@@ -216,19 +221,15 @@ public class ShoppostCatalog {
 					
 				case "addProductCancelShare": // see error message
 					
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
-					//signup.signInTest(_email, _password, 0);
-					//analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
-					//analyticsReporter.toCatalog();
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.toCatalog();
 					preCt = catalog.getProductCount();
 					catalog.addProduct();
 					Thread.sleep(1000);
 					catalog.scrapeCancel(_td.getCatalogTests().getProductURL());  //
 					Thread.sleep(1000);
-					postCt = catalog.getProductCount(); //closes modal window
+					postCt = catalog.getProductCount(); 
 					Thread.sleep(1000);
 					
 					if(preCt == postCt) {
@@ -243,17 +244,15 @@ public class ShoppostCatalog {
 
 
 				case "shareModalTest": //Opens share modal window for random product
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					Actions move = new Actions(driver);
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
+					signup.helloPlatform(_td.getBaseUrl());
+					analyticsReporter.toCatalog();
 					_productCount = catalog.getProductCount();
 					move.moveToElement(catalog.hoverRandomProduct());
 					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					catalog.getShare();
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 					shareModal.closeShareModal();
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 					//logout.logoutFromCat();
 					
 					break;
@@ -262,60 +261,39 @@ public class ShoppostCatalog {
 					
 				case "addProductViaDashboard": 	//
 					
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
+					signup.helloPlatform(_td.getBaseUrl());
 					signup.signInTest(_email, _password, 0);
-					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
+					analyticsReporter.toCatalog();
+					preCt = catalog.getProductCount();
+					catalog.toDash();
 					catalog.addProduct();
 					Thread.sleep(1000);
 					catalog.scrape(_td.getCatalogTests().getProductURL());  //this should open the share modal
 					Thread.sleep(1000);
+					shareModal.closeShareModal();
 					catalog.closeAdd();
+					analyticsReporter.toCatalog();  //go back to catalog to count products
+					postCt = catalog.getProductCount(); 
+					Thread.sleep(1000);
+					
+					if(preCt == postCt) {
+						fail("FAIL - product count should increase: change "+(preCt - postCt));
+					} else {
+						System.out.println("PASS - new products added.");
+					}
+
 					
 					Thread.sleep(1000);
 					logout.logoutFromCat();
 					
 					break;
 					
-				case "productDisplay": 	
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
-					signup.signInTest(_email, _password, 0);
-					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
-					analyticsReporter.toCatalog();
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					catalog.addProduct();
-					Thread.sleep(1000);
-					catalog.scrape(_td.getCatalogTests().getProductURL());  //bad URL
-					Thread.sleep(1000);
-					catalog.closeAdd();
-					
-					Thread.sleep(1000);
-					//logout.logoutFromCat();
-					
-					_errorMsg = signupinPage.getRedAdvisory();
-					if(_errorMsg.equals("The Password field is required.")) {
-						System.out.println("PASS Correct error advisory: "+_errorMsg);
-					} else {
-						fail("FAIL - requires blank password error advisory not: "+_errorMsg);
-					}
-					
-					
-					break;
-					
 					
 				case "noProductDisplay": 
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject 
-					//signup.signInTest(_email, _password, 0);
-					//analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
-					//analyticsReporter.toCatalog();
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					Thread.sleep(2000);
-					catalog.closeAdd();
-					
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.toCatalog();
 					Thread.sleep(1000);
-					//logout.logoutFromCat();
 					
 					_errorMsg = signupinPage.checkEmailError();
 					if(_errorMsg.equals("Must be a valid email address.")) {
@@ -328,100 +306,113 @@ public class ShoppostCatalog {
 					break;
 				
 				case "deleteProductViaHover": 
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					Actions move3 = new Actions(driver);
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.toCatalog();
+					Thread.sleep(1000);
 					_productCount = catalog.getProductCount();
-					move3.moveToElement(catalog.hoverRandomProduct());
-					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+					move.moveToElement(catalog.hoverRandomProduct());
 					catalog.getRandomDelete();
-					Thread.sleep(2000);
+					Thread.sleep(500);
+					postCt = catalog.getProductCount();
 					//logout.logoutFromCat();
+					
+					if(_productCount == postCt) {
+						fail("FAIL - product count should decrease: change "+(_productCount - postCt));
+					} else {
+						System.out.println("PASS - product deleted.");
+					}
+
 					
 					break;
 
 				
 				case "deleteProductViaModalShare": 
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					Actions move4 = new Actions(driver);
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.toCatalog();
 					_productCount = catalog.getProductCount();
-					move4.moveToElement(catalog.hoverRandomProduct());
-					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+					move.moveToElement(catalog.hoverRandomProduct());
 					catalog.getShare();
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 					shareModal.deleteProdViaModal();
+					postCt = catalog.getProductCount();
+					Thread.sleep(500);
+
+					if(_productCount == postCt) {
+						fail("FAIL - product count should decrease: change "+(_productCount - postCt));
+					} else {
+						System.out.println("PASS - product deleted.");
+					}
+
 					
-					Thread.sleep(2000);
-					//logout.logoutFromCat();
 					
 					break;
 
 				
 				case "deleteProductViaModalStats": 
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					Actions move5 = new Actions(driver);
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.toCatalog();
 					_productCount = catalog.getProductCount();
-					move5.moveToElement(catalog.hoverRandomProduct());
-					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+					move.moveToElement(catalog.hoverRandomProduct());
 					catalog.getShare();
 					shareModal.goStats();
 					Thread.sleep(1000);
 					shareModal.deleteProdViaModal();
-					
-					Thread.sleep(2000);
-					//logout.logoutFromCat();
-					
+					postCt = catalog.getProductCount();
+					Thread.sleep(500);
+
+					if(_productCount == postCt) {
+						fail("FAIL - product count should decrease: change "+(_productCount - postCt));
+					} else {
+						System.out.println("PASS - product deleted.");
+					}
+
 					break;
 
 				
 				case "cancelDeleteProduct": 
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					Actions move6 = new Actions(driver);
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.toCatalog();
 					_productCount = catalog.getProductCount();
-					move6.moveToElement(catalog.hoverRandomProduct());
-					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+					move.moveToElement(catalog.hoverRandomProduct());
 					catalog.getShare();
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 					shareModal.deleteProdViaModalCancel();
-					Thread.sleep(1500);
-					shareModal.closeShareModal();
-					
-					Thread.sleep(2000);
-					//logout.logoutFromCat();
-					
+					postCt = catalog.getProductCount();
+					Thread.sleep(500);
+
+					if(_productCount == postCt) {
+						System.out.println("PASS - product deletion cancelled.");
+					} else {
+						fail("FAIL - product count should not change: change "+(_productCount - postCt));
+					}
+
 					break;
 
 				
 				case "viewRandomStats": //View random product Stats from product hover
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					Actions move2 = new Actions(driver);
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.toCatalog();
 					_productCount = catalog.getProductCount();
-					move2.moveToElement(catalog.hoverRandomProduct());  //hover random product from Catalog
-					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
+					move.moveToElement(catalog.hoverRandomProduct());  //hover random product from Catalog
 					catalog.getRandomStats();  //click stats button
 					Thread.sleep(2000);
 					shareModal.closeShareModal();
-					Thread.sleep(2000);
+					Thread.sleep(500);
 					//logout.logoutFromCat();
 					
 					break;
 					
 				case "viewRandomStatsViaShare": //View random product Stats from share Modal
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					Actions move7 = new Actions(driver);
-					catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.toCatalog();
 					_productCount = catalog.getProductCount();
-					move7.moveToElement(catalog.hoverRandomProduct());  //hover random product from Catalog
+					move.moveToElement(catalog.hoverRandomProduct());  //hover random product from Catalog
 					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
 					catalog.getShare();  //click share button
 					Thread.sleep(1000);
@@ -433,13 +424,9 @@ public class ShoppostCatalog {
 					break;
 
 				case "viewSingleStatsViaDashMS": //View product Stats from Dashboard most shared
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
-					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					catalog.getShare();  //click share button
-					Thread.sleep(1000);
-					shareModal.goStats();
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.openMostShared();
 					Thread.sleep(2000);
 					shareModal.closeShareModal();
 					//logout.logoutFromCat();
@@ -447,22 +434,14 @@ public class ShoppostCatalog {
 					break;
 
 				case "viewSingleStatsViaDashMR": //View product Stats from Dashboard most referred
-					signup.helloPlatform(_td.getCatalogTests().getBaseUrl());
-					analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
-					shareModal = PageFactory.initElements(driver, ShareModal.class);  //instantiate the pageObject
-					//catalog = PageFactory.initElements(driver, ProductCatalog.class);  //instantiate the pageOject 
-					catalog.getShare();  //click share button
-					Thread.sleep(1000);
-					shareModal.goStats();
+					signup.helloPlatform(_td.getBaseUrl());
+					signup.signInTest(_email, _password, 0);
+					analyticsReporter.openMostReferred();
 					Thread.sleep(2000);
 					shareModal.closeShareModal();
 					//logout.logoutFromCat();
 					
 					break;
-
-
-
-					
 					
   				}
 		}

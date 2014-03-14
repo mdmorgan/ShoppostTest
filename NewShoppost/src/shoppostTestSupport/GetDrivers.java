@@ -112,7 +112,7 @@ public class GetDrivers {
 			break;
 			
 		case "*internetexplorer":
-			_platform = "Win7IE9";
+			_platform = "Win7IE10";
 			break;
 			
 		case "*chrome":

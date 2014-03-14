@@ -73,7 +73,8 @@ public class ScreenShots {
 			
 			}else if (("platform").equals(_test)) {
 				File screenshot = ((TakesScreenshot)_driver).getScreenshotAs(OutputType.FILE);
-				FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\"+_platform+"_"+_setup+"_"+_c+".png"));
+				//FileUtils.copyFile(screenshot, new File("c:\\Users\\DIY\\LPScreenshots\\"+_platform+"_"+_setup+"_"+_c+".png")); //Mark's machine
+				FileUtils.copyFile(screenshot, new File("c:\\Projects\\Screenshots\\"+_platform+"_"+_setup+"_"+_c+".png"));  //Mark's and Michal's machine
 			}
 		}
 	  return ;

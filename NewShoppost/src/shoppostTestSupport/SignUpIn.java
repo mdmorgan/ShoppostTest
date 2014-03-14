@@ -44,8 +44,8 @@ public class SignUpIn {
 		driver = _driver;
 		_td = td;
 		
-		homePage = PageFactory.initElements(driver, Home.class);
-		signupinPage = PageFactory.initElements(driver,  SignUpSignIn.class);
+		homePage = new Home(driver);
+		signupinPage = new SignUpSignIn(driver);
 		
 		//System.out.println(baseURL);
 		

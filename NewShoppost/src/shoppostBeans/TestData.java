@@ -4,6 +4,17 @@ import java.util.List;
 
 public class TestData {
 	
+	private String baseUrl;
+	private String shopifyShareUrl;
+	private String shopifyDashUrl;
+	private String lpUrlPre;
+	private String username;
+	private String password;
+	private String usernameFB;
+	private String passwordFB;
+	private String usernameTwitter;
+	private String passwordGoog;
+	
 	private AcctSetTests acctSetTests;
 	private SignupinTests signupinTests;
 	private SignupinFBTests signupinFBTests;
@@ -18,6 +29,17 @@ public class TestData {
 	private List<LoginData> loginData;
 	private Products products;
 	private Price price;
+	
+	public String getBaseUrl() { return baseUrl; }
+	public String getShopifyShareUrl() { return shopifyShareUrl; }
+	public String getShopifyDashUrl() { return shopifyDashUrl; }
+	public String getLpUrlPre() { return lpUrlPre; }
+	public String getUsername() { return username; }
+	public String getPassword() { return password; }
+	public String getUsernameFB() { return usernameFB; }
+	public String getPasswordFB() { return passwordFB; }
+	public String getUsernameTwitter() { return usernameTwitter; }
+	public String getPasswordGoog() { return passwordGoog; }
 	
 	public AcctSetTests getAcctSetTests() { return acctSetTests; }
 	public SignupinTests getSignupinTests() { return signupinTests; }

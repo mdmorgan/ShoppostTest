@@ -130,7 +130,7 @@ public class ShoppostLinks {
 	}
 	
 	@Test
-	  public void test_signUpIn() throws Exception {
+	  public void test_Links() throws Exception {
 		wait = new WebDriverWait(driver, 10);
 		Random rand = new Random();
 		
@@ -148,7 +148,7 @@ public class ShoppostLinks {
 		analyticsReporter = PageFactory.initElements(driver, AnalyticsReporter.class);  //instantiate the pageOject 
 		signupinPage = PageFactory.initElements(driver, SignUpSignIn.class);  //instantiate the pageOject
 		
-		_username = _td.getSignupinTests().getUsername();
+		_username = _td.getUsername();
 		_passkey = _td.getSignupinTests().getHalfPassword();
 		_freshUser = "";
 		
@@ -165,7 +165,7 @@ public class ShoppostLinks {
   			switch (_testCase) {
   			
 				case "signupValid": //loads home page then redirects to signup page
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					
 					r = rand.nextInt(1000);
 					_freshUser = _username+r+"@sharklasers.com";  //make fake email with random number (a brand new user)
@@ -192,7 +192,7 @@ public class ShoppostLinks {
 				case "userAgreement": 
 					Window win = new Window(driver);
 					
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl());
+					signup.helloPlatform(_td.getBaseUrl());
 					r = rand.nextInt(10000);
 					_email = _username+r+"@sharklasers.com";  //make fake email with random number (a brand new user)_email = _username+r+".com";  //make fake email with random number
 					_password = _passkey+_passkey;
@@ -234,7 +234,7 @@ public class ShoppostLinks {
 					break;
 				
 				case "alreadyMemberBtn": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl()+"sign-up");
+					signup.helloPlatform(_td.getBaseUrl()+"sign-up");
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
 					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
 					Thread.sleep(500);
@@ -252,14 +252,14 @@ public class ShoppostLinks {
 						System.out.println("ERROR! Email input not found");
 					}
 					finally {}
-					driver.get(_td.getSignupinTests().getBaseUrl()+"/sign-up"); 
+					driver.get(_td.getBaseUrl()+"/sign-up"); 
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
 					//driver.close();
 					break;
 				
 				
 				case "forgotPassword": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl()+"sign-up");
+					signup.helloPlatform(_td.getBaseUrl()+"sign-up");
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
 					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
 					Thread.sleep(500);
@@ -277,13 +277,13 @@ public class ShoppostLinks {
 						System.out.println("ERROR! Email input not found");
 					}
 					finally {}
-					driver.get(_td.getSignupinTests().getBaseUrl()+"/sign-up"); 
+					driver.get(_td.getBaseUrl()+"/sign-up"); 
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
 					//driver.close();
 					break;
 				
 				case "signUp": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl()+"sign-up");
+					signup.helloPlatform(_td.getBaseUrl()+"sign-up");
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
 					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
 					Thread.sleep(500);
@@ -301,13 +301,13 @@ public class ShoppostLinks {
 						System.out.println("ERROR! Email input not found");
 					}
 					finally {}
-					driver.get(_td.getSignupinTests().getBaseUrl()+"/sign-up"); 
+					driver.get(_td.getBaseUrl()+"/sign-up"); 
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
 					//driver.close();
 					break;
 				
 				case "getHelp": 
-					signup.helloPlatform(_td.getSignupinTests().getBaseUrl()+"sign-up");
+					signup.helloPlatform(_td.getBaseUrl()+"sign-up");
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//section[@class='form']/footer/p[1]")));
 					driver.findElement(By.xpath("//section[@class='form']/footer/p[1]/a")).click();
 					Thread.sleep(500);
@@ -325,7 +325,7 @@ public class ShoppostLinks {
 						System.out.println("ERROR! Email input not found");
 					}
 					finally {}
-					driver.get(_td.getSignupinTests().getBaseUrl()+"/sign-up"); 
+					driver.get(_td.getBaseUrl()+"/sign-up"); 
 					wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signUpBtn")));  //waiting for sign up page
 					//driver.close();
 					break;

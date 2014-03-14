@@ -75,7 +75,7 @@ import shoppostTestSupport.Window;
 
 @RunWith(Parameterized.class)   //this runs the tests serially one browser at a time
 //@RunWith(Parallelized.class)    //this will run the tests in parallel and will open a new thread for each browser simultaneously
-public class ShoppostAnalytics {
+public class ShoppostShopifyAllAnalytics {
 	
 	private String browser;
 	private WebDriver driver;
@@ -104,7 +104,7 @@ public class ShoppostAnalytics {
 	private Window win;
 	private Set beforePopup;
 	private HashMap _fadm;  //full analytics data map
-	private String _redirectTotal, _redirectTotal_b;
+	private String _redirectTotal, _redirectTotal_b, _folderTestCase, _testPlatform;
 	private String[] _socialReactions,_geoLocations, _fbRedirects,_twitRedirects,_pinRedirects,_googRedirects,_otherRedirects;
 	private String[] _socialReactions_b,_geoLocations_b,_fbRedirects_b,_twitRedirects_b,_pinRedirects_b,_googRedirects_b,_otherRedirects_b;
 	
@@ -130,7 +130,7 @@ public class ShoppostAnalytics {
 		return Arrays.asList(browsersStrings);
 	} 
 	
-	public ShoppostAnalytics (String browser){
+	public ShoppostShopifyAllAnalytics (String browser){
 		
 		this.browser = browser;
 	}
@@ -142,7 +142,7 @@ public class ShoppostAnalytics {
 		
 		GetDrivers getDriver = new GetDrivers(this.browser);   //instantiate GetDriver
 		driver = getDriver.set();
-		
+		_testPlatform = getDriver.getPlatform();  //gets platform (must match qmetry platform in test cases)
 		return;
 		
 	}
@@ -188,13 +188,13 @@ public class ShoppostAnalytics {
   			//_testCase = TestRunner.getTests()[k];
 			_testCase = _td.getAnalyticsTests().getTests().get(k);
 			//_testCase = "signupValid";
+			_folderTestCase = _td.getAnalyticsTests().getTcFolder()+_testCase;
   			switch (_testCase) {
   			
 					
 					
 				case "buildFullAnalyticsDataMap": // 
-					signup.helloPlatform(_td.getBaseUrl());
-					signup.signInTest(_username, _password, 0);
+					signup.helloPlatform(_td.getShopifyDashUrl());
 					Thread.sleep(500);
 					
 					_fadm = analyticsDataMap.buildFullMap("7"); //pass in the date range  7, 14, or 30
@@ -238,6 +238,22 @@ public class ShoppostAnalytics {
 					//logout.logoutFromCat();
 					
 					break;
+					
+				case "preAllDashSS":
+					signup.helloPlatform(_td.getShopifyDashUrl());
+					
+					Thread.sleep(1500);
+					ss.takeTheShot(1, "platform", _testPlatform, _folderTestCase);
+					break;
+					
+				case "postAllDashSS":
+					signup.helloPlatform(_td.getShopifyDashUrl());
+					
+					Thread.sleep(1500);
+					ss.takeTheShot(1, "platform", _testPlatform, _folderTestCase);
+					break;
+
+					
 					
 				case "confirmTwitterShare": // twitter shares
 					signup.helloPlatform(_td.getBaseUrl());

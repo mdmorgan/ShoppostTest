@@ -1,4 +1,17 @@
 {
+	"baseUrl":"http://merchant.shoppost.com/",
+	"shopifyShareUrl":"http://merchant.shoppost.com/shopify/product/231241242/share?access_token=hello",
+	"shopifyDashUrl":"http://merchant.shoppost.com/shopify/dashboard?access_token=hellomyfriend",
+	"lpUrlPre":"http://store.shoppost.com/",
+	
+	"username":"test001@mark.com",
+	"password":"DishDish",
+	"usernameFB":"mark.morgan@zantler.com",
+	"passwordFB":"moreaboutMoosh",
+	"usernameTwitter":"MooshGaloosh",
+	"passwordGoog":"F15hZ00mG33",
+		
+		
 	"acctSetTests":
 	  {
 	    "testsPossibles":[ "generateNewUser", "acctMenuFunction", "homeRedirect", "busProfile", "storeDetails", "amazon", "paypal", "subscription", "notifications", "changePW" ],
@@ -12,23 +25,17 @@
 	  },
 	"signupinTests":
 	  {
-	    "baseUrl":"http://localhost:9000/home",
-		"username":"test",
-		"existingUser":"test001@mark.com",
+	    "newUsername":"test",
 		"halfPassword":"Dish",
-		"userPW":"DishDish",
 		"tcFolder":"",
-		"testsPossibles":[ "signupValid", "alreadyExist", "signupBlankEmail", "signupInvalidEmail", "signupNoPW", "signupShortPW", "signupMismatchPW", "userAgreement", "alreadyMemberBtn", "signinValid", "signinValidRemember", "signinBlankEmail", "signinEmailBlankPW", "signinInvalidEmail", "signinBadUsernameBadPW" ],
-		"tests":[  "signupValid" ],
+		"testsPossibles":[ "signupValid", "alreadyExist","signupInvalidEmail",  "signupBlankEmail", "signupNoPW", "signupShortPW", "signupMismatchPW", "userAgreement", "alreadyMemberBtn", "signinValid", "signinValidRemember", "signinBlankEmail", "signinEmailBlankPW", "signinInvalidEmail", "signinBadUsernameBadPW" ],
+		"tests":[ "signupValid", "alreadyExist","signupInvalidEmail","signupShortPW", "signupMismatchPW" ],
 		"widths": [320, 600, 900 ]
 		
 	  },
 	  
 	"signupinFBTests":
 	  {
-		"baseUrl":"http://localhost:9000/products",
-		"usernameFB":"mark.morgan@zantler.com",
-		"passwordFB":"moreaboutMoosh",
 		"testsPossibles":[ "signupValid", "alreadyExist", "signupBlankEmail", "signupInvalidEmail", "signupNoPW", "signupShortPW", "signupMismatchPW", "signupNoTandC", "userAgreement", "alreadyMemberBtn", "signinValid", "signinBlankEmail", "signinEmailBlankPW", "signinInvalidEmail", "signinBadUsernameBadPW", "forgotPassword", "signUp", "getHelp" ],
 		"tests":[   "shareModalTest" ],
 		"widths": [320, 600, 900 ]
@@ -37,13 +44,9 @@
 	  
 	"catalogTests":
 	  {
-		"baseUrl":"http://localhost:9000/home",
 		"productURL":"http://schminky.schmink.com",
-		"usernameFB":"mark.morgan@zantler.com",
-		"passwordFB":"moreaboutMoosh",
-		"username":"test001@mark.com",
-		"password":"DishDish",
-		"testsPossibles":[ "addProductValidURL", "addProductInvalidURL", "addProductCancelShare", "shareModalTest", "addProductViaDashboard", "productDisplay", "noProductDisplay", "deleteProductViaHover", "deleteProductViaModalShare", "deleteProductViaModalStats", "cancelDeleteProduct","viewRandomStats","viewRandomStatsViaShare", "viewSingleStatsViaDashMS", "viewSingleStatsViaDashMR" ],
+		"tcFolder":"CatalogView",
+		"testsPossibles":[ "addProductValidURL", "addProductInvalidURL", "addProductCancelShare", "shareModalTest", "addProductViaDashboard",  "noProductDisplay", "deleteProductViaHover", "deleteProductViaModalShare", "deleteProductViaModalStats", "cancelDeleteProduct","viewRandomStats","viewRandomStatsViaShare", "viewSingleStatsViaDashMS", "viewSingleStatsViaDashMR" ],
 		"tests":[   "addProductValidURL" ],
 		"widths": [320, 600, 900 ],
 		"below the numbers indicate which search parameters to use":"so [ 0, 2 ] means using 'one' and 'three' ",
@@ -59,63 +62,42 @@
 	  
 	"shareData":
 	  {
-		"baseUrl":"http://localhost:9000/home",
-		"productURL":"http://schminky.schmink.com",
-		"usernameFB":"mark.morgan@zantler.com",
-		"passwordFB":"moreaboutMoosh",
-		"usernameTwitter":"MooshGaloosh",
-		"passwordGoog":"F15hZ00mG33",
 		"googComment":"from the world of test automation",
-		"username":"test001@mark.com",
-		"password":"DishDish",
-		"testsPossibles":[ "confirmFBShare", "confirmTwitterShare", "confirmPinterestShare", "confirmGooglePlusShare" ],
-		"tests":[   "confirmPinterestShare" ],
+		"testsPossibles":[ "confirmFBShare", "confirmTwitterShare", "confirmPinterestShare", "confirmGooglePlusShare", "openShopifyModal", "linkTab", "embedTab", "shareTab", "statsTab", "previewLandingPage", "viewRandomStats", "viewRandomStatsViaShare", "viewSingleStatsViaDashMS", "viewSingleStatsViaDashMR" ],
+		"tests":[  "openShopifyModal", "linkTab", "embedTab", "shareTab", "statsTab" ],
 		"shareMessage":"Greetings from Shoppost Auto-Test",
-		"moreTweet":"Another sweet tweet",
-		"widths": [320, 600, 900 ],
-		"below the numbers indicate which search parameters to use":"so [ 0, 2 ] means using 'one' and 'three' ",
-		"searchWith": [ 0 ],
-		"search": [ "one", "two", "three", "four", "photo", "pump", "tang", "now", "Pictures", "Target", "Liminal", "beautiful" ],
-		"expectResult": [ 1 ],
-		"productTitle": [ "Zat Best Test", "Photos From The Liminal", "Pictures i found", "My Best Test" ],
-		"productTags": [ "photo, one", "pumpkin, halloween, two", "three, photo, remember, tangerine, glamour", "Look up, now, four" ],
-		"comment":"remember the arrays are zero-indexed"
-
+		"moreTweet":"Another sweet auto-tweet",
+		"shopifyEmail":"GavrielPlotke@yahoo.com",
+		"shopifyStorename":"mystery-paperback",
+		"shopifyPassword":"CatFever",
+		"shopifyLoginUrl":"https://www.shopify.com/login",
+		"widths": [320, 600, 900 ]
+		
 		
 	  },
 
 	"analyticsTests":
 	  {
-		"baseUrl":"http://localhost:9000/home",
-		"baseUrl2":"http://localhost:9000/shopify/product/231241242/share?access_token=hello",
-		"baseUrl3":"http://localhost:9000/shopify/dashboard?access_token=hellomyfriend",
 		"productURL":"http://schminky.schmink.com",
-		"usernameFB":"mark.morgan@zantler.com",
-		"passwordFB":"moreaboutMoosh",
-		"username":"test001@mark.com",
-		"password":"DishDish",
-		"testsPossibles":[ "buildAnalyticsDataMap" ],
-		"tests":[   "buildAnalyticsDataMap" ],
+		"googComment":"from the world of test automation",
+		"tcFolder":"ShopifyDash",
+		"testsPossibles":[ "buildFullAnalyticsDataMap", "buildProdAnalyticsDataMap", "preProdDashSS", "postProdDashSS", "shopifyToFB", "shopifyToTwitter", "shopifyToPinterest", "shopifyToGoogle" ],
+		"tests":[  "preProdDashSS", "shopifyToFB" ],
 		"widths": [320, 600, 900 ]
 	  },
 
 	  
 	"uiData":
 	  {
-	    "baseUrl":"http://jetwing.azurewebsites.net/",
-		"baseUrl2":"http://localhost:9000/products",
-		"username":"test001@mark.com",
-		"userPW":"DishDish",
-		"tcFolder":"UIResponsive",
-		"testsPossibles":[ "home", "signUp","signIn", "dashboard", "catalog", "modalWindow", "forgotPassword", "resetPassword" , "acctSetting" ],
+	    "tcFolder":"UIResponsive",
+		"testsPossibles":[ "home", "signUp","signIn", "dashboard", "catalog", "modalWindow", "forgotPassword", "resetPassword" , "acctSetting", "shopifyShareModal", "shopifyDashboard" ],
 		"tests":[  "signUp"  ],
 		"widths": [ 320, 600, 900 ]
 		
 	  },  
 	"newProductTests":
 	  {
-	    "baseUrl":"http://staging.shoppost.in/",
-		"username":"barry@bright",
+	    "username":"barry@bright",
 		"userPW":"qwerqwer",
 		"thisProduct":"1",
 		"testsPossibles":[ "nameDescripTags", "addingMedia (button, upload, URL, youTube, verifyThumbnail, thumbnailFunction)", "hoverMedia", "addMediaUrl (this also verifies image on inventory screen)", "addYouTube", "inventorySKUQty (thumbnail, skuQty, autoOffered, validation, saveNoVariation,  )",  "optionsAddThree (dynamic, savew/Variations )", "territories", "basicPricing", "advPricing" ],
@@ -125,14 +107,7 @@
 	  },
 	  "newUserShareTests":
 	  {
-	    "baseUrl3":"http://test.diystorefronts.com/",
-		"baseUrl":"http://staging.shoppost.in/",
-		"baseUrl2":"http://118.102.176.20:81/",
-		"username2":"orchardstr@msn",
-		"username2":"i@ii",
-		"username":"ii",
-		"userPW":"DishDish",
-		"noVProduct": [ "My Best Test", "This is a test product but it is my very best test, best i've ever had (and that's saying something)", "one", "picture", "test", "http://farm9.staticflickr.com/8400/8653699786_8fac70c38a_h.jpg" ],
+	    "noVProduct": [ "My Best Test", "This is a test product but it is my very best test, best i've ever had (and that's saying something)", "one", "picture", "test", "http://farm9.staticflickr.com/8400/8653699786_8fac70c38a_h.jpg" ],
 		"thisProduct":"1",
 		"repeat": 10,
 		"territory": [ "US", "ZZ", "US", "CA", "IN" ],
@@ -144,12 +119,7 @@
 	  },
 	  "landingPageTests":
 	  {
-	    "baseUrl":"http://staging.shoppost.in/",
-		"baseUrl2":"http://118.102.176.20:81/",
-		"username":"ii98999@sharklasers",
-		"username2":"orchardstr@msn",
-		"userPW":"DishDish",
-		"noVProduct": [ "My Best Test", "This is a test product but it is my very best test, best i've ever had (and that's saying something)", "one", "picture", "test", "http://farm9.staticflickr.com/8400/8653699786_8fac70c38a_h.jpg" ],
+	    "noVProduct": [ "My Best Test", "This is a test product but it is my very best test, best i've ever had (and that's saying something)", "one", "picture", "test", "http://farm9.staticflickr.com/8400/8653699786_8fac70c38a_h.jpg" ],
 		"thisProduct":"3",
 		"territory": [ "US", "ZZ", "US", "CA", "IN" ],
 		"testsPossibles":[  "makeNoVariationsProduct", "makeVariationsProduct", "checkUINoVarsLandingPage", "checkUIVarsLandingPage", "verifyLPElements", "checkLandingPageLinks", "checkLPBuyBtn", "verifyContCheckoutBtn", "verifyPayPalPurchase", "verifyAmazonPurchase", "checkLPNoInventory", "checkInventoryPostPurchase" ],
@@ -163,13 +133,7 @@
 	  },
 	  "widgetTests":
 	  {
-	    "baseUrl":"http://staging.shoppost.in/",
-		"baseUrl2":"http://118.102.176.20:81/",
-		"username3":"i@ii50",
-		"username":"ii77@mailinator",
-		"username2":"orchardstr@msn",
-		"userPW":"DishDish",
-		"noVProduct": [ "My Best Test", "This is a test product but it is my very best test, best i've ever had (and that's saying something)", "one", "picture", "test", "http://farm9.staticflickr.com/8400/8653699786_8fac70c38a_h.jpg" ],
+	    "noVProduct": [ "My Best Test", "This is a test product but it is my very best test, best i've ever had (and that's saying something)", "one", "picture", "test", "http://farm9.staticflickr.com/8400/8653699786_8fac70c38a_h.jpg" ],
 		"thisProduct":"3",
 		"territory": [ "US", "ZZ", "US", "CA", "IN" ],
 		"testsPossibles":[  "makeNoVariationsProduct", "makeVariationsProduct",  "confirmWidgetMainView", "confirmWidgetDescripView", "confirmWidgetMerchantView", "confirmWidgetImageView", "confirmWidgetVideoView", "confirmWidgetShareState", "confirmWidgetCheckout", "logOut" , "confirmFBPost", "confirmTwitterTweet", "verifyPaypalPurchase", "verifyAmazonPurchase" ],

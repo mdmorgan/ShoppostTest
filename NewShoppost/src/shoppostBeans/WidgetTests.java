@@ -8,9 +8,6 @@ public class WidgetTests {
 	
 	
 	
-	private String baseUrl;
-	private String username;
-	private String userPW;
 	private String thisProduct;
 	private List<String> noVProduct;
 	private List<String> territory;
@@ -31,9 +28,6 @@ public class WidgetTests {
 	
 	
 	
-	public String getBaseUrl() { return baseUrl; }
-	public String getUsername() { return username; }
-	public String getUserPW() { return userPW; }
 	public String getThisProduct() {return thisProduct; }
 	public List<String> getNoVProduct() { return noVProduct; }
 	public List<String> getTerritory() { return territory; }

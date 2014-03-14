@@ -7,7 +7,7 @@ import org.junit.runner.notification.Failure;
 public class TestRunner {
 	
 	//private static String[] defaultTest = { "signupValid", "signupNoPW", "signupShortPW", "signupMismatchPW" };
-	private static String[] defaultTest = { "home" };
+	private static String[] defaultTest = { "signUp" };
 	private static String[] tests;
 	
 	
